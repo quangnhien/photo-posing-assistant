@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import torch
 import config
+import copy
 
 from src import util
 from src.model import bodypose_model
@@ -204,7 +205,7 @@ class Body(object):
         subset = self.selectOneKeypointSets(candidate,subset)
         return candidate, subset
     
-    def compare(self,oriImg,compareImg):
+    def compare(self,oriImg,compareImg,guide=True):
         candidate1, subset1 = self.__call__(oriImg)
         #subset1 = self.selectOneKeypointSets(candidate1,subset1)
         keypoints1 = self.getKeypointList(candidate1,subset1)
@@ -214,11 +215,43 @@ class Body(object):
         #subset2 = self.selectOneKeypointSets(candidate2,subset2)
         keypoints2 = self.getKeypointList(candidate2,subset2)
         vectors2 = self.getVectors(keypoints2,config.limbSeqToCompare)
+        if not guide:
+            return self.getAngleSetAndScore(vectors1,vectors2)
+        angles,score = self.getAngleSetAndScore(vectors1,vectors2)
         
-        return self.getAngleSetAndScore(vectors1,vectors2),keypoints2,vectors2
+        # find joints need to improve
+        potential_pairs = np.array(config.limbSeqToCompare)[np.abs(angles)>10]
+        potential_angles = angles[np.abs(angles)>10]
+        potential_vectors = vectors2[np.abs(angles)>10]
+        
+        guide = ""
+        canvas = copy.deepcopy(compareImg)
+        for i in range(len(potential_pairs)):
+            start_point = keypoints2[potential_pairs[i][1]-1][:2].astype(int)
+            if abs(potential_vectors[i][1])>abs(potential_vectors[i][0]):
+                if potential_vectors[i][1]>0:
+                    end_point = [start_point[0] + int(potential_angles[i]/2),start_point[1]]
+                else:
+                    end_point = [start_point[0] - int(potential_angles[i]/2),start_point[1]]
+                direction = "left" if end_point[0]>start_point[0] else "right"
+                guide = guide + f"Move your {config.joinName[potential_pairs[i][1]]} to the {direction} {determineSizeMoving(abs(potential_angles[i]))}. \n"
+            else:
+                if potential_vectors[i][0]<0:
+                    end_point = [start_point[0],start_point[1]+ int(potential_angles[i]/2)]
+                else:
+                    end_point = [start_point[0],start_point[1]- int(potential_angles[i]/2)]
+                direction = "down" if end_point[1]>start_point[1] else "up"
+                guide = guide + f"Move your {config.joinName[potential_pairs[i][1]]} to the {direction} {determineSizeMoving(abs(potential_angles[i]))}. \n"
+            color = (0, 255, 0) 
+            thickness = 2
+            tip_length = 0.5
+            cv2.arrowedLine(canvas, start_point, end_point, color, thickness, tipLength=tip_length)
+        horizontal = cv2.hconcat([oriImg, compareImg, canvas])
+        
+        return horizontal, score, guide
         
         
-        
+
     def getAngleSetAndScore(self,vect1,vect2):
         numerator = vect1[:,0]*vect2[:,1]-vect1[:,1]*vect2[:,0]
         denominator = np.sum(vect2[:,:2]*vect1[:,:2],1)
@@ -242,7 +275,12 @@ class Body(object):
         keypoint_list = candidate[subset][:,:3]
         keypoint_list[subset==-1]=[0,0,0]
         return keypoint_list
-    
+
+def determineSizeMoving(angle):
+    if angle<30:
+        return "a little bit"
+    else:
+        return "quite a bit"
 if __name__ == "__main__":
     body_estimation = Body('../model/body_pose_model.pth')
 
