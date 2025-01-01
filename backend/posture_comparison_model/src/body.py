@@ -215,7 +215,7 @@ class Body(object):
         keypoints2 = self.getKeypointList(candidate2,subset2)
         vectors2 = self.getVectors(keypoints2,config.limbSeqToCompare)
         
-        return self.getAngleSetAndScore(vectors1,vectors2)
+        return self.getAngleSetAndScore(vectors1,vectors2),keypoints2,vectors2
         
         
         
@@ -226,6 +226,7 @@ class Body(object):
         angle = np.degrees(angle)
         angle[angle!=0]-=90
         return angle,1-sum(np.abs(angle))/(sum(angle!=0)*90)
+    
     def getVectors(self,kps,limbSeq):
         return np.array([[kps[limbSeq[i][0]-1][0] - kps[limbSeq[i][1]-1][0],kps[limbSeq[i][0]-1][1] - kps[limbSeq[i][1]-1][1],kps[limbSeq[i][0]-1][2] + kps[limbSeq[i][1]-1][2]] if kps[limbSeq[i][0]-1][2]!=0 and kps[limbSeq[i][1]-1][2]!=0 else [0,0,0] for i in range(len(limbSeq))])
     # get keypoint set with the largest area
