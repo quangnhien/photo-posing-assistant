@@ -9,8 +9,17 @@ import torch
 import config
 import copy
 
+import openai
+
+
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 from src import util
 from src.model import bodypose_model
+
+openai.api_key = os.getenv('GPT_API_KEY')
 
 class Body(object):
     def __init__(self, model_path):
@@ -205,7 +214,7 @@ class Body(object):
         subset = self.selectOneKeypointSets(candidate,subset)
         return candidate, subset
     
-    def compare(self,oriImg,compareImg,guide=True):
+    def compare(self,oriImg,compareImg,guide=True,gpt=True):
         candidate1, subset1 = self.__call__(oriImg)
         #subset1 = self.selectOneKeypointSets(candidate1,subset1)
         keypoints1 = self.getKeypointList(candidate1,subset1)
@@ -247,6 +256,19 @@ class Body(object):
             tip_length = 0.5
             cv2.arrowedLine(canvas, start_point, end_point, color, thickness, tipLength=tip_length)
         horizontal = cv2.hconcat([oriImg, compareImg, canvas])
+        if gpt:
+            response = openai.ChatCompletion.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": f'''You are a photographer and you are taking pictures of a client. 
+                        You have provided them with a photo of a model with a nice pose and your client is copying that pose.
+                        After taking the first photo, the matching score is {score}% and you want to ask the client to change a few things to get the perfect:
+                        {guide}. Please make the tutorial more natural and concise
+                        '''}
+                ]
+            )
+            guide = response['choices'][0]['message']['content']
+            
         
         return horizontal, score, guide
         
