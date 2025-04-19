@@ -21,6 +21,13 @@ Upload your photo to receive feedback and a grade based on pose accuracy, framin
 
 ![Alt Text](./demo/output.png)
 ![Alt Text](./demo/output1.png)
+
+Reference pose : Reference pose from another tourist
+
+User-submitted photo: Your uploaded photo
+
+Pose matching advice: AI-generated advice to 
+help you match the pose more accurately
 ## 📈 **Project Status**
 
 - ✅ **Have Done**
@@ -32,7 +39,6 @@ Upload your photo to receive feedback and a grade based on pose accuracy, framin
     - Frontend
     - Deploy to Azure
     - CI/CD pipeline
-
 ## 🛠️ **Tech Stack**
 
 - AI/ML: Pytorch (OpenCV, PoseNet, OpenAI)
