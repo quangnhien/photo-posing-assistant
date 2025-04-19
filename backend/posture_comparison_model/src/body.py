@@ -255,6 +255,7 @@ class Body(object):
             thickness = 2
             tip_length = 0.5
             cv2.arrowedLine(canvas, start_point, end_point, color, thickness, tipLength=tip_length)
+            
         horizontal = cv2.hconcat([oriImg, compareImg, canvas])
         if gpt:
             response = openai.ChatCompletion.create(
@@ -303,6 +304,7 @@ def determineSizeMoving(angle):
         return "a little bit"
     else:
         return "quite a bit"
+    
 if __name__ == "__main__":
     body_estimation = Body('../model/body_pose_model.pth')
 

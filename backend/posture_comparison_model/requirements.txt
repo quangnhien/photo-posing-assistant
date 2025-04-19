@@ -3,3 +3,8 @@ matplotlib
 opencv-python
 scipy
 scikit-image
+openai
+fastapi
+PIL
+uvicorn
+python-multipart
