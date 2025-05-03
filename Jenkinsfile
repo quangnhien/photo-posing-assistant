@@ -30,11 +30,12 @@ pipeline {
               cd photo-posing-assistant
               git pull
               cd model/pose_server
-              
-              echo $prod_posemodel_env > .env
+
+              cat <<EOF > .env
+                ${prod_posemodel_env}
+                EOF
               echo "Contents of .env:"
               cat .env
-              chmod 600 .env
 
               // cp $PROD_POSEMODEL_ENV_FILE .env
               // echo "Contents of .env:"
