@@ -18,56 +18,53 @@ pipeline {
       }
     }
 
-    stages {
-        stage('Only Run on Model Changes') {
-            when {
-                changeset "**/model/**"
-            }
-            steps {
-                withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@$SERVER_IP << 'ENDSSH'
-                            echo "✅ Connected to remote server"
-                            cd /photo-posing-assistant
-                            git pull
-                            cd /model/pose_server
-                            echo "$prod_posemodel_env" > .env
-                            chmod 600 .env
-                            cd ..
-                            docker-compose down
-                            docker-compose up -d --build
-                        ENDSSH
-                    '''
-                }
-            }
+    stage('Only Run on Model Changes') {
+      when {
+        changeset "**/model/**"
+      }
+      steps {
+        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
+          sh '''
+            ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@$SERVER_IP << 'ENDSSH'
+              echo "✅ Connected to remote server"
+              cd /photo-posing-assistant
+              git pull
+              cd model/pose_server
+              echo "$prod_posemodel_env" > .env
+              chmod 600 .env
+              cd ..
+              docker-compose down
+              docker-compose up -d --build
+            ENDSSH
+          '''
         }
+      }
     }
 
-    stages {
-        stage('Only Run on App Changes') {
-            when {
-                changeset "**/app/**"
-            }
-            steps {
-                withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@$SERVER_IP << 'ENDSSH'
-                            echo "✅ Connected to remote server"
-                            cd /photo-posing-assistant
-                            git pull
-                            cd /app/backend
-                            echo "$prod_backend_env" > .env
-                            chmod 600 .env
-                            cd ..
-                            docker-compose down
-                            docker-compose up -d --build
-                        ENDSSH
-                    '''
-                }
-            }
+    stage('Only Run on App Changes') {
+      when {
+        changeset "**/app/**"
+      }
+      steps {
+        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
+          sh '''
+            ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@$SERVER_IP << 'ENDSSH'
+              echo "✅ Connected to remote server"
+              cd /photo-posing-assistant
+              git pull
+              cd app/backend
+              echo "$prod_backend_env" > .env
+              chmod 600 .env
+              cd ..
+              docker-compose down
+              docker-compose up -d --build
+            ENDSSH
+          '''
         }
+      }
     }
 
+    // Optional verification
     // stage('Verify Services') {
     //   steps {
     //     echo "Checking if backend is running..."
