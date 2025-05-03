@@ -33,8 +33,8 @@ pipeline {
               echo "$prod_posemodel_env" > .env
               chmod 600 .env
               cd ..
-              docker-compose down
-              docker-compose up -d --build
+              docker compose down
+              docker compose up -d --build
             ENDSSH
           '''
         }
@@ -56,8 +56,8 @@ pipeline {
               echo "$prod_backend_env" > .env
               chmod 600 .env
               cd ..
-              docker-compose down
-              docker-compose up -d --build
+              docker compose down
+              docker compose up -d --build
             ENDSSH
           '''
         }
