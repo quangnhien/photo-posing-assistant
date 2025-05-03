@@ -27,18 +27,12 @@ pipeline {
         withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
           sh """
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
-              echo "test"
-              echo $KEY
-              echo $SERVER_IP
-              echo $prod_backend_env
-              echo $test
-              echo $model_server
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
               git pull
               cd model/pose_server
 
-              echo $prod_backend_env > .env
+              echo $model_server > .env
               echo "Contents of .env:"
               cat .env
               chmod 600 .env
