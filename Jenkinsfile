@@ -3,7 +3,6 @@ pipeline {
 
   environment {
     COMPOSE_PROJECT_NAME = "myapp"
-    prod_posemodel_env = credentials('prod_posemodel_env')
     PROD_POSEMODEL_ENV_FILE = credentials('PROD_POSEMODEL_ENV_FILE')
     PROD_BACKEND_ENV_FILE = credentials('PROD_BACKEND_ENV_FILE')
 
@@ -23,18 +22,20 @@ pipeline {
         changeset "**/model/**"
       }
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
+        withCredentials([
+          sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),
+          file(credentialsId: 'PROD_POSEMODEL_ENV_FILE', variable: 'POSEMODEL_ENV')
+        ]) {
           sh """
+            scp -o StrictHostKeyChecking=no -i $KEY \$POSEMODEL_ENV azureuser@$SERVER_IP:/home/azureuser/photo-posing-assistant/model/pose_server/.env
+
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
               git pull
               cd model/pose_server
-
-              cp $PROD_BACKEND_ENV_FILE .env
               echo "Contents of .env:"
               cat .env
-
               cd ..
               docker compose down
               docker compose up -d --build
@@ -49,14 +50,18 @@ pipeline {
         changeset "**/app/**"
       }
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
+        withCredentials([
+          sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),
+          file(credentialsId: 'PROD_BACKEND_ENV_FILE', variable: 'BACKEND_ENV')
+        ]) {
           sh """
+            scp -o StrictHostKeyChecking=no -i $KEY \$BACKEND_ENV azureuser@$SERVER_IP:/home/azureuser/photo-posing-assistant/app/backend/.env
+
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
               git pull
               cd app/backend
-              cp $PROD_BACKEND_ENV_FILE .env
               chmod 600 .env
               cd ..
               docker compose down
@@ -66,24 +71,5 @@ pipeline {
         }
       }
     }
-
-    // Optional verification
-    // stage('Verify Services') {
-    //   steps {
-    //     echo "Checking if backend is running..."
-    //     sh 'curl -f http://localhost:8000 || echo "Backend not yet available"'
-    //     echo "Checking if frontend is running..."
-    //     sh 'curl -f http://localhost || echo "Frontend not yet available"'
-    //   }
-    // }
   }
-
-  // post {
-  //   success {
-  //     echo '✅ Frontend + Backend successfully deployed!'
-  //   }
-  //   failure {
-  //     echo '❌ Deployment failed.'
-  //   }
-  // }
 }
