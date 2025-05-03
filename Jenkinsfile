@@ -24,7 +24,7 @@ pipeline {
         changeset "**/model/**"
       }
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),string(credentialsId: 'prod_posemodel_env', variable: 'ENV_FILE')]) {
+        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
           sh """
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "test"
@@ -38,9 +38,9 @@ pipeline {
               git pull
               cd model/pose_server
 
-              echo "$ENV_FILE" > a.txt
+              echo $prod_backend_env > .env
               echo "Contents of .env:"
-              cat a.txt
+              cat .env
               chmod 600 .env
               cd ..
               docker compose down
@@ -57,7 +57,7 @@ pipeline {
       }
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
-          sh '''
+          sh """
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
@@ -69,7 +69,7 @@ pipeline {
               docker compose down
               docker compose up -d --build
             ENDSSH
-          '''
+          """
         }
       }
     }
