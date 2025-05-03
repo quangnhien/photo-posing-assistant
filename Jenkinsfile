@@ -27,6 +27,11 @@ pipeline {
         withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),string(credentialsId: 'prod_posemodel_env', variable: 'ENV_FILE')]) {
           sh '''
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
+              echo "$KEY"
+              echo "$SERVER_IP"
+              echo "$prod_backend_env"
+              echo "$test"
+              echo "$model_server"
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
               git pull
