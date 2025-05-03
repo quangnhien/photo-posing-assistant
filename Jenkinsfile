@@ -31,9 +31,7 @@ pipeline {
               git pull
               cd model/pose_server
 
-              cat <<EOF > .env
-                ${prod_posemodel_env}
-                EOF
+              printf "%s" "$prod_posemodel_env" > .env
               echo "Contents of .env:"
               cat .env
 
