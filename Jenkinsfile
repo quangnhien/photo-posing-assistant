@@ -29,7 +29,7 @@ pipeline {
           sh """
             scp -o StrictHostKeyChecking=no -i $KEY \$POSEMODEL_ENV azureuser@$SERVER_IP:/home/azureuser/photo-posing-assistant/model/pose_server/.env
 
-            ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
+            ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP '
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
               git pull
@@ -39,7 +39,7 @@ pipeline {
               cd ..
               docker compose down
               docker compose up -d --build
-            ENDSSH
+            '
           """
         }
       }
@@ -57,7 +57,7 @@ pipeline {
           sh """
             scp -o StrictHostKeyChecking=no -i $KEY \$BACKEND_ENV azureuser@$SERVER_IP:/home/azureuser/photo-posing-assistant/app/backend/.env
 
-            ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
+            ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP '
               echo "✅ Connected to remote server"
               cd photo-posing-assistant
               git pull
@@ -66,7 +66,7 @@ pipeline {
               cd ..
               docker compose down
               docker compose up -d --build
-            ENDSSH
+            '
           """
         }
       }
