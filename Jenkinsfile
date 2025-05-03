@@ -5,8 +5,6 @@ pipeline {
     COMPOSE_PROJECT_NAME = "myapp"
     prod_backend_env = credentials('prod_backend_env')
     prod_posemodel_env = credentials('prod_posemodel_env')
-    test = credentials('test')
-    model_server = credentials('model_server')
 
     SERVER_IP = '172.200.176.26'
     SSH_KEY_ID = 'MODEL_VM_SSH_KEY'
@@ -32,7 +30,7 @@ pipeline {
               git pull
               cd model/pose_server
 
-              echo $model_server > .env
+              echo $prod_posemodel_env > .env
               echo "Contents of .env:"
               cat .env
               chmod 600 .env
