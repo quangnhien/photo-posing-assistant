@@ -25,7 +25,7 @@ pipeline {
       }
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),string(credentialsId: 'prod_posemodel_env', variable: 'ENV_FILE')]) {
-          sh '''
+          sh """
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "test"
               echo $KEY
@@ -46,7 +46,7 @@ pipeline {
               docker compose down
               docker compose up -d --build
             ENDSSH
-          '''
+          """
         }
       }
     }
