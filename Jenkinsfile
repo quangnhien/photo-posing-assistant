@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     COMPOSE_PROJECT_NAME = "myapp"
+    prod_posemodel_env = credentials('prod_posemodel_env')
     PROD_POSEMODEL_ENV_FILE = credentials('PROD_POSEMODEL_ENV_FILE')
     PROD_BACKEND_ENV_FILE = credentials('PROD_BACKEND_ENV_FILE')
 
@@ -30,17 +31,17 @@ pipeline {
               git pull
               cd model/pose_server
 
-              echo "Copying .env from: $PROD_POSEMODEL_ENV_FILE"
-              cp "$PROD_POSEMODEL_ENV_FILE" .env
+
+              echo $prod_posemodel_env > .env
               
               echo "Contents of .env:"
               cat .env
               chmod 600 .env
 
-              cp $PROD_POSEMODEL_ENV_FILE .env
-              echo "Contents of .env:"
-              cat .env
-              chmod 600 .env
+              // cp $PROD_POSEMODEL_ENV_FILE .env
+              // echo "Contents of .env:"
+              // cat .env
+              // chmod 600 .env
               cd ..
               docker compose down
               docker compose up -d --build
