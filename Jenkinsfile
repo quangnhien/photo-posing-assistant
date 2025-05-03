@@ -23,7 +23,7 @@ pipeline {
         changeset "**/model/**"
       }
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),file(credentialsId: 'PROD_POSEMODEL_ENV_FILE', variable: 'PROD_POSEMODEL_ENV_FILE')]) {
+        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
           sh """
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
@@ -31,14 +31,10 @@ pipeline {
               git pull
               cd model/pose_server
 
-              printf "%s" $prod_posemodel_env > .env
+              cp $PROD_BACKEND_ENV_FILE .env
               echo "Contents of .env:"
               cat .env
 
-              // cp $PROD_POSEMODEL_ENV_FILE .env
-              // echo "Contents of .env:"
-              // cat .env
-              // chmod 600 .env
               cd ..
               docker compose down
               docker compose up -d --build
