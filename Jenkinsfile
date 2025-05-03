@@ -3,8 +3,8 @@ pipeline {
 
   environment {
     COMPOSE_PROJECT_NAME = "myapp"
-    prod_backend_env = credentials('prod_backend_env')
-    prod_posemodel_env = credentials('prod_posemodel_env')
+    PROD_POSEMODEL_ENV_FILE = credentials('PROD_POSEMODEL_ENV_FILE')
+    PROD_BACKEND_ENV_FILE = credentials('PROD_BACKEND_ENV_FILE')
 
     SERVER_IP = '172.200.176.26'
     SSH_KEY_ID = 'MODEL_VM_SSH_KEY'
@@ -30,7 +30,7 @@ pipeline {
               git pull
               cd model/pose_server
 
-              echo $prod_posemodel_env > .env
+              cp $PROD_POSEMODEL_ENV_FILE .env
               echo "Contents of .env:"
               cat .env
               chmod 600 .env
@@ -55,7 +55,7 @@ pipeline {
               cd photo-posing-assistant
               git pull
               cd app/backend
-              echo "$prod_backend_env" > .env
+              cp $PROD_BACKEND_ENV_FILE .env
               chmod 600 .env
               cd ..
               docker compose down

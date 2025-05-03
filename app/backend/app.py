@@ -15,6 +15,12 @@ load_dotenv()
 
 app = FastAPI()
 
+#ENDPOINT
+
+CLIP_ENDPOINT = f"http://{os.getenv('SERVER_IP')}:8001/clip_embed"
+BLIP2_ENDPOINT = f"http://{os.getenv('SERVER_IP')}:8002/generate_caption"
+POSE_ENDPOINT = f"http://{os.getenv('SERVER_IP')}:8003/generate_keypoints"
+
 # MongoDB connection
 client = motor.motor_asyncio.AsyncIOMotorClient(f"mongodb+srv://{os.getenv('MONGOBD_USER')}:{os.getenv('MONGOBD_PASSWORD')}@mwa.ah6ka.mongodb.net/?retryWrites=true&w=majority&appName=MWA")
 db = client.get_database('posingassistant')
@@ -39,7 +45,7 @@ resize_crop_transform = transforms.Compose([
 async def embed_image(image_bytes):
     async with httpx.AsyncClient() as client:
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
-        response = await client.post(os.getenv('CLIP_ENDPOINT'), files=files)
+        response = await client.post(CLIP_ENDPOINT, files=files)
         if response.status_code == 200:
             return response.json()['vector']
         else:
@@ -49,7 +55,7 @@ async def embed_image(image_bytes):
 async def generate_poses(image_bytes):
     async with httpx.AsyncClient() as client:
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
-        response = await client.post(os.getenv('POSE_ENDPOINT'), files=files)
+        response = await client.post(POSE_ENDPOINT, files=files)
         if response.status_code == 200:
             return response.json()['vector']
         else:
@@ -59,7 +65,7 @@ async def generate_poses(image_bytes):
 async def generate_tags_from_image(image_bytes):
     async with httpx.AsyncClient() as client:
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
-        response = await client.post(os.getenv('BLIP2_ENDPOINT'), files=files)
+        response = await client.post(BLIP2_ENDPOINT, files=files)
         if response.status_code == 200:
             caption = response.json()['caption']
             # Simple tag splitting
