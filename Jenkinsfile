@@ -32,9 +32,9 @@ pipeline {
               git pull
               cd model/pose_server
 
-              echo "$ENV_FILE" > .env
+              echo "$ENV_FILE" > a.txt
               echo "Contents of .env:"
-              cat .env
+              cat a.txt
               chmod 600 .env
               cd ..
               docker compose down
