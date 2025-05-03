@@ -30,7 +30,12 @@ pipeline {
               git pull
               cd model/pose_server
 
-              cp $PROD_POSEMODEL_ENV_FILE .env
+              cp "$PROD_POSEMODEL_ENV_FILE" .env
+              echo "Contents of .env:"
+              cat .env
+              chmod 600 .env
+
+              cp $PROD_POSEMODEL_ENV_FILE > .env
               echo "Contents of .env:"
               cat .env
               chmod 600 .env
