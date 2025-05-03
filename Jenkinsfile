@@ -25,7 +25,7 @@ pipeline {
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
           sh '''
-            ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@$SERVER_IP << 'ENDSSH'
+            ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
               cd /photo-posing-assistant
               git pull
@@ -48,7 +48,7 @@ pipeline {
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
           sh '''
-            ssh -o StrictHostKeyChecking=no -i $KEY ubuntu@$SERVER_IP << 'ENDSSH'
+            ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
               cd /photo-posing-assistant
               git pull
