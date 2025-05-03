@@ -24,7 +24,7 @@ pipeline {
         changeset "**/model/**"
       }
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY')]) {
+        withCredentials([sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),string(credentialsId: 'prod_posemodel_env', variable: 'ENV_FILE')]) {
           sh '''
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
@@ -32,13 +32,7 @@ pipeline {
               git pull
               cd model/pose_server
 
-              echo "Contents of test:"
-              echo "$test"
-              echo "$test" > .env
-              echo "Contents of .env:"
-              cat .env
-              
-              echo "$prod_posemodel_env" > .env
+              echo "$ENV_FILE" > .env
               echo "Contents of .env:"
               cat .env
               chmod 600 .env
