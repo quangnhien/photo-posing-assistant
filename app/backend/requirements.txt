@@ -6,5 +6,11 @@ scikit-image
 openai
 fastapi
 uvicorn
-dotenv
 python-multipart
+motor
+Pillow
+uuid
+httpx
+dotenv
+azure-storage-blob
+torchvision

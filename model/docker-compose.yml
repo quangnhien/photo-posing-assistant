@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  blip2:
+    build:
+      context: ./blip2_server
+    container_name: blip2
+    ports:
+      - "8002:8002"  
+
+  clip:
+    build:
+      context: ./clip_server
+    container_name: clip
+    ports:
+      - "8001:8001" 
+
+  pose:
+    build:
+      context: ./pose_server
+    container_name: pose
+    ports:
+      - "8003:8003" 

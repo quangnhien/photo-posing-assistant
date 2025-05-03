@@ -1,7 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 import motor.motor_asyncio
-import torch
 from torchvision import transforms
 from PIL import Image
 from azure.storage.blob import BlobServiceClient
@@ -18,8 +17,8 @@ app = FastAPI()
 
 # MongoDB connection
 client = motor.motor_asyncio.AsyncIOMotorClient(f"mongodb+srv://{os.getenv('MONGOBD_USER')}:{os.getenv('MONGOBD_PASSWORD')}@mwa.ah6ka.mongodb.net/?retryWrites=true&w=majority&appName=MWA")
-db = client.pose_gallery
-poses_collection = db.poses
+db = client.get_database('posingassistant')
+poses_collection = db.get_collection('posegallery')
 
 # Azure Blob Storage
 AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
@@ -103,13 +102,13 @@ async def upload_pose(file: UploadFile = File(...)):
         azure_url = await upload_to_azure(processed_image_bytes)
 
         # Generate tags (use original full image or processed one — your choice)
-        tags = generate_tags_from_image(original_contents)
+        tags = await generate_tags_from_image(original_contents)
         
         # Extrect poses (use processed 224x224 image)
-        poses = embed_image(processed_image_bytes)
+        poses = await embed_image(processed_image_bytes)
         
         # Generate vector (use processed 224x224 image)
-        vector = embed_image(processed_image_bytes)
+        vector = await embed_image(processed_image_bytes)
 
         # Save everything to MongoDB
         pose_doc = {

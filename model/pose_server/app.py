@@ -2,9 +2,6 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 import config
 from src.body import Body 
-
-from PIL import Image
-from io import BytesIO
 import cv2
 import numpy as np
 
