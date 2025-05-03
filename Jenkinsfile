@@ -27,7 +27,7 @@ pipeline {
           sh '''
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
-              cd /photo-posing-assistant
+              cd photo-posing-assistant
               git pull
               cd model/pose_server
               echo "$prod_posemodel_env" > .env
@@ -50,7 +50,7 @@ pipeline {
           sh '''
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP << 'ENDSSH'
               echo "✅ Connected to remote server"
-              cd /photo-posing-assistant
+              cd photo-posing-assistant
               git pull
               cd app/backend
               echo "$prod_backend_env" > .env
