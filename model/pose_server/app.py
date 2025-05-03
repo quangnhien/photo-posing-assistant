@@ -40,3 +40,4 @@ async def compare(file: UploadFile = File(...)):
         return JSONResponse(content={"keypoints": vector.tolist()}, status_code=200)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+#

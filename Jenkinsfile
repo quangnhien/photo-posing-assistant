@@ -31,6 +31,7 @@ pipeline {
               git pull
               cd model/pose_server
               echo "$prod_posemodel_env" > .env
+              cat .env
               chmod 600 .env
               cd ..
               docker compose down
