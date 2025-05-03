@@ -5,6 +5,7 @@ pipeline {
     COMPOSE_PROJECT_NAME = "myapp"
     prod_backend_env = credentials('prod_backend_env')
     prod_posemodel_env = credentials('prod_posemodel_env')
+    test = credentials('test')
     model_server = credentials('model_server')
 
     SERVER_IP = '172.200.176.26'
@@ -30,6 +31,13 @@ pipeline {
               cd photo-posing-assistant
               git pull
               cd model/pose_server
+
+              echo "Contents of test:"
+              echo "$test"
+              echo "$test" > .env
+              echo "Contents of .env:"
+              cat .env
+              
               echo "$prod_posemodel_env" > .env
               echo "Contents of .env:"
               cat .env
