@@ -29,7 +29,7 @@ async def compare(img1: UploadFile = File(...),img2: UploadFile = File(...)):
     return score,guide
 
 @app.post("/generate_keypoints")
-async def compare(file: UploadFile = File(...)):
+async def generate_keypoints(file: UploadFile = File(...)):
     try:
         contents = await file.read()
         contents = np.frombuffer(contents, np.uint8)
@@ -39,5 +39,5 @@ async def compare(file: UploadFile = File(...)):
         vector = comparision_model.generateKeypoints(contents)
         return JSONResponse(content={"keypoints": vector.tolist()}, status_code=200)
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        return JSONResponse(content={"keypoints":[]}, status_code=200)
 #

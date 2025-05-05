@@ -66,7 +66,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
 
         cv2.arrowedLine(canvas, start_point, end_point, color, thickness, tipLength=tip_length)
 
-    horizontal = cv2.hconcat([oriImg, compareImg, canvas])
+    # horizontal = cv2.hconcat([oriImg, compareImg, canvas])
     if gpt:
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
@@ -81,7 +81,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
         guide = response['choices'][0]['message']['content']
         
     
-    return horizontal, score, guide 
+    return canvas, score, guide 
     
 def getVectors(kps,limbSeq):
     return np.array([[kps[limbSeq[i][0]-1][0] - kps[limbSeq[i][1]-1][0],kps[limbSeq[i][0]-1][1] - kps[limbSeq[i][1]-1][1],kps[limbSeq[i][0]-1][2] + kps[limbSeq[i][1]-1][2]] if kps[limbSeq[i][0]-1][2]!=0 and kps[limbSeq[i][1]-1][2]!=0 else [0,0,0] for i in range(len(limbSeq))])

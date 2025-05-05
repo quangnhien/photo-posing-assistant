@@ -227,7 +227,6 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         userPose = await generate_poses(user_image_bytes)
 
         # Compare and generate output image
-
         horizontal, score, guide = compare_keypoints(
             modelPose["poses"], userPose, resize_image(modelImage), resize_image(userImg)
         )

@@ -33,11 +33,12 @@ function AdminPanel() {
         setTags(result.tags); // Set the tags to show below
         alert('✅ Image uploaded successfully!');
       } else {
-        alert(`❌ Upload failed: ${result.error}`);
+        console.error(`❌ Upload failed: ${result.error}`);
+        alert(`❌ Oops! We couldn’t detect your pose in this photo. Please try uploading another one. Thanks a bunch!`);
       }
     } catch (error) {
-      console.error('Upload error:', error);
-      alert(`❌ Upload failed: ${error.message}`);
+      console.error('❌ Upload error:', error);
+      alert(`❌ Oops! We couldn’t detect your pose in this photo. Please try uploading another one. Thanks a bunch!`);
     }
   };
   console.log(tags)

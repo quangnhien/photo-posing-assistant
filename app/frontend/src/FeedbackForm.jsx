@@ -6,19 +6,22 @@ function FeedbackForm({ poseId }) {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async () => {
-    if (useful === null) return; // Require a selection
-
+    if (useful === null) return;
+  
+    const formData = new FormData();
+    formData.append('pose_id', poseId);
+    formData.append('is_useful', useful);
+    formData.append('comment', comment.trim());
+    formData.append('pose_data', JSON.stringify(selectedPose));
+    formData.append('image_url', resultImageUrl);
+    formData.append('uploaded_image', uploadedImage); // actual image file
+  
     try {
-      const response = await fetch('http://localhost:8000/submit_feedback', {
+      const response = await fetch(`${API_BASE_URL}/submit_feedback`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pose_id: poseId,
-          is_useful: useful,
-          comment: comment.trim(),
-        }),
+        body: formData,
       });
-
+  
       if (response.ok) {
         setSubmitted(true);
       } else {
@@ -29,6 +32,7 @@ function FeedbackForm({ poseId }) {
       alert('❌ Error submitting feedback.');
     }
   };
+  
 
   return (
     <div className="mt-6 text-center">
