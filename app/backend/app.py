@@ -43,14 +43,13 @@ client = motor.motor_asyncio.AsyncIOMotorClient(
     f"mongodb+srv://{os.getenv('MONGOBD_USER')}:{os.getenv('MONGOBD_PASSWORD')}@mwa.ah6ka.mongodb.net/?retryWrites=true&w=majority&appName=MWA")
 db = client.get_database('posingassistant')
 poses_collection = db.get_collection('posegallery')
-
+error_collection = db.get_collection('errorimages')
+compare_collection = db.get_collection('compare')
 # Azure Blob Storage
 AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
-AZURE_STORAGE_CONTAINER_NAME = os.getenv('AZURE_STORAGE_CONTAINER_NAME')
 blob_service_client = BlobServiceClient.from_connection_string(
     AZURE_STORAGE_CONNECTION_STRING)
-container_client = blob_service_client.get_container_client(
-    AZURE_STORAGE_CONTAINER_NAME)
+
 
 
 # Resize + CenterCrop Transform (for processed image saved to Azure)
@@ -73,13 +72,18 @@ async def embed_image(image_bytes):
 # Helper: Extract pose
 
 
-async def generate_poses(image_bytes):
+async def generate_poses(image_bytes,image_url=None):
     async with httpx.AsyncClient() as client:
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
         response = await client.post(POSE_ENDPOINT, files=files)
         if response.status_code == 200:
             return response.json()['keypoints']
         else:
+            if image_url:
+                await error_collection.insert_one({
+                "image_url": image_url,
+                "error_message": str(response.text)
+            })
             raise Exception(f"PoseModel Server Error: {response.text}")
 
 # Helper: Generate Tags from Image
@@ -103,11 +107,13 @@ async def generate_tags_from_image(image_bytes):
 # Helper: Upload processed image bytes to Azure
 
 
-async def upload_to_azure(processed_image_bytes, extension='jpg'):
+async def upload_to_azure(processed_image_bytes, extension='jpg',container_name = os.getenv('AZURE_STORAGE_IMAGE_CONTAINER_NAME')):
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     random_id = uuid.uuid4().hex[:10]
     new_filename = f"pose_{timestamp}_{random_id}.{extension}"
 
+    container_client = blob_service_client.get_container_client(
+        container_name)
     blob_client = container_client.get_blob_client(new_filename)
     blob_client.upload_blob(processed_image_bytes, overwrite=True)
     blob_url = blob_client.url
@@ -134,29 +140,37 @@ async def upload_pose(file: UploadFile = File(...)):
         # buffer.seek(0)
         # processed_image_bytes = buffer.read()
         processed_image_bytes = await file.read()
+        print("********")
         # Upload processed image to Azure
         azure_url = await upload_to_azure(processed_image_bytes)
-
+        print("********")
+        try:
         # Generate tags (use original full image or processed one — your choice)
-        tags = await generate_tags_from_image(processed_image_bytes)
+            tags = await generate_tags_from_image(processed_image_bytes)
 
-        # Extrect poses (use processed 224x224 image)
-        poses = await generate_poses(processed_image_bytes)
+            # Extrect poses (use processed 224x224 image)
+            poses = await generate_poses(processed_image_bytes)
 
-        # Generate vector (use processed 224x224 image)
-        vector = await embed_image(processed_image_bytes)
+            # Generate vector (use processed 224x224 image)
+            vector = await embed_image(processed_image_bytes)
 
-        # Save everything to MongoDB
-        pose_doc = {
-            "image_url": azure_url,
-            "popularity":0,
-            "tags": tags,
-            "vector": vector,
-            "poses": poses
-        }
-        await poses_collection.insert_one(pose_doc)
+            # Save everything to MongoDB
+            pose_doc = {
+                "image_url": azure_url,
+                "popularity":0,
+                "tags": tags,
+                "vector": vector,
+                "poses": poses,
+                "poses_confidence":sum(p[2] for p in poses) / len(poses)
+            }
+            await poses_collection.insert_one(pose_doc)
 
-        return JSONResponse(content={"message": "Pose uploaded with auto-tags!", "tags": tags, "image_url": azure_url}, status_code=200)
+            return JSONResponse(content={"message": "Pose uploaded with auto-tags!", "tags": tags, "image_url": azure_url}, status_code=200)
+        except Exception as e:
+            await error_collection.insert_one({
+                "image_url": azure_url,
+                "error_message": str(e)
+            })
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
@@ -209,10 +223,11 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         if not modelPose:
             raise HTTPException(status_code=404, detail="Pose not found")
 
-        modelImage = await download_image_as_np_array(modelPose["image_url"])  # or PIL if you prefer
+        modelImage = await download_image_as_np_array(modelPose["image_url"])  
 
         # Read and process user image
         user_image_bytes = await userImage.read()
+        user_image_url = await upload_to_azure(user_image_bytes)
         nparr = np.frombuffer(user_image_bytes, np.uint8)
         userImg = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         userImg = cv2.cvtColor(userImg, cv2.COLOR_BGR2RGB)
@@ -224,7 +239,7 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         # buffer.seek(0)
         # processed_user_image_bytes = buffer.read()
 
-        userPose = await generate_poses(user_image_bytes)
+        userPose = await generate_poses(user_image_bytes,user_image_url)
 
         # Compare and generate output image
         horizontal, score, guide = compare_keypoints(
@@ -239,10 +254,23 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         
         if not math.isfinite(score):  # catches NaN, inf, -inf
             score = 1
+            # Save everything to MongoDB
+            
+        pose_doc = {
+            "model_image_url": modelPose["image_url"],
+            "user_image_url":user_image_url,
+            "guide_image_url": await upload_to_azure(encoded_image,container_name = os.getenv('AZURE_STORAGE_GUIDE_IMAGE_CONTAINER_NAME')),
+            "guide": guide,
+            "score": round(score, 2),
+            "user_pose":userPose,
+            "pose_confidence":sum(p[2] for p in userPose) / len(userPose)
+        }
+        result = await compare_collection.insert_one(pose_doc)
         return JSONResponse(content={
             "image_base64": encoded_image,
             "score": round(score, 2),
-            "guide": guide
+            "guide": guide,
+            "id":str(result.inserted_id)
         })
 
     except Exception as e:

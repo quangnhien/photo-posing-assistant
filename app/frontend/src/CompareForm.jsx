@@ -31,7 +31,6 @@ function CompareForm({ selectedPose, uploadedImage, onResult }) {
     }
 
     try {
-      console.log('Upload error:dfdfdfd');
       const response = await fetch(`${API_BASE_URL}/compare`, {
         method: 'POST',
         body: formData,
