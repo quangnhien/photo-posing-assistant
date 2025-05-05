@@ -3,4 +3,6 @@ uvicorn
 torch
 transformers
 Pillow
+nltk
 python-multipart
+

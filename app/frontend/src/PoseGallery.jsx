@@ -1,27 +1,30 @@
-import React from 'react';
-
-const poses = [
-  { id: 1, url: '/poses/pose1.jpg' },
-  { id: 2, url: '/poses/pose2.jpg' },
-  { id: 3, url: '/poses/pose3.jpg' },
-  { id: 4, url: '/poses/pose4.jpg' },
-];
+import React, { useEffect, useState } from 'react';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function PoseGallery({ selectedPose, onSelectPose }) {
+  const [poses, setPoses] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/popular_poses`)
+      .then(res => res.json())
+      .then(data => setPoses(data.poses || []))
+      .catch(err => console.error('Failed to load images', err));
+  }, []);
+
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">1️⃣ Choose a Pose</h2>
-
+  
       {selectedPose ? (
         <div className="relative">
           <div className="overflow-hidden rounded-2xl shadow-md">
             <img 
-              src={selectedPose.url} 
+              src={selectedPose.image_url} 
               alt="Selected Pose" 
               className="w-full h-80 object-cover transform transition-transform duration-300 hover:scale-105"
             />
           </div>
-
+  
           {/* Floating Change button */}
           <button
             onClick={() => onSelectPose(null)}
@@ -39,7 +42,7 @@ function PoseGallery({ selectedPose, onSelectPose }) {
               className="cursor-pointer overflow-hidden rounded-2xl shadow-md"
             >
               <img 
-                src={pose.url} 
+                src={pose.image_url} 
                 alt={`Pose ${pose.id}`} 
                 className="w-full h-40 object-cover transform transition-transform duration-300 hover:scale-105"
               />
@@ -49,6 +52,8 @@ function PoseGallery({ selectedPose, onSelectPose }) {
       )}
     </div>
   );
-}
+  }
+  
 
 export default PoseGallery;
+
