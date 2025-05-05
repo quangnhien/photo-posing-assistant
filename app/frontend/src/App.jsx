@@ -10,7 +10,6 @@ function App() {
   const [view, setView] = useState('user'); // 'user' or 'admin'
   const [selectedPose, setSelectedPose] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
-  const [instructionImage, setInstructionImage] = useState(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
@@ -50,7 +49,6 @@ function App() {
             <CompareForm
               selectedPose={selectedPose}
               uploadedImage={uploadedImage}
-              onResult={setInstructionImage}
             />
 
 

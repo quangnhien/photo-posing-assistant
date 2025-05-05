@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
-function FeedbackForm({ poseId }) {
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+function FeedbackForm({ id }) {
   const [useful, setUseful] = useState(null); // true / false
   const [comment, setComment] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -9,12 +9,9 @@ function FeedbackForm({ poseId }) {
     if (useful === null) return;
   
     const formData = new FormData();
-    formData.append('pose_id', poseId);
+    formData.append('id', id);
     formData.append('is_useful', useful);
     formData.append('comment', comment.trim());
-    formData.append('pose_data', JSON.stringify(selectedPose));
-    formData.append('image_url', resultImageUrl);
-    formData.append('uploaded_image', uploadedImage); // actual image file
   
     try {
       const response = await fetch(`${API_BASE_URL}/submit_feedback`, {

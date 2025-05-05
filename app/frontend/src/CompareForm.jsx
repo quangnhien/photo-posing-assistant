@@ -3,11 +3,12 @@ import FeedbackForm from './FeedbackForm';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-function CompareForm({ selectedPose, uploadedImage, onResult }) {
+function CompareForm({ selectedPose, uploadedImage }) {
   const [imageUrl, setImageUrl] = useState(null);
   const [score, setScore] = useState(null);
   const [guide, setGuide] = useState('');
   const [loading, setLoading] = useState(false);
+  const [id, setId] = useState(null);
 
   const handleSubmit = async () => {
     if (!selectedPose || !uploadedImage) {
@@ -42,8 +43,7 @@ function CompareForm({ selectedPose, uploadedImage, onResult }) {
         setImageUrl(imageUrl);
         setScore(data.score);
         setGuide(data.guide);
-  
-        onResult(selectedPose.id);
+        setId(data.id)
       }else{
         alert(`Oops! We couldn’t detect your pose in this photo. Please try uploading another one. Thanks a bunch!`);
       }
@@ -83,10 +83,7 @@ function CompareForm({ selectedPose, uploadedImage, onResult }) {
             <p><strong>Guide:</strong> {guide}</p>
           </div>
           <FeedbackForm
-            poseId={selectedPose?.id}
-            selectedPoseURL={selectedPose.url}
-            uploadedImage={uploadedImage}
-            resultImageUrl={imageUrl}
+            id={id}
           />
 
         </div>

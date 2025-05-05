@@ -277,3 +277,21 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         import traceback
         print("Error during /compare:\n", traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/submit_feedback")
+async def submit_feedback(
+    id: str = Form(...),
+    is_useful: bool = Form(...),
+    comment: str = Form(...)
+):
+    result = await compare_collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": {
+            "is_useful": is_useful,
+            "comment": comment
+        }}
+    )
+    if result.matched_count == 0:
+        return JSONResponse(status_code=404, content={"error": "Pose not found"})
+    return JSONResponse(content={"message": "Feedback received"}, status_code=200)
