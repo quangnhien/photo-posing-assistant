@@ -44,7 +44,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
     guide = ""
     canvas = copy.deepcopy(compareImg)
     for i in range(len(potential_pairs)):
-        start_point = keypoints2[potential_pairs[i][1]-1][:2].astype(int)
+        start_point = np.array(keypoints2[potential_pairs[i][1]-1][:2]).astype(int)
         if abs(potential_vectors[i][1])>abs(potential_vectors[i][0]):
             if potential_vectors[i][1]>0:
                 end_point = [start_point[0] + int(potential_angles[i]/2),start_point[1]]
@@ -62,9 +62,11 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
         color = (0, 255, 0) 
         thickness = 2
         tip_length = 0.5
-        cv2.arrowedLine(canvas, start_point, end_point, color, thickness, tipLength=tip_length)
         
-    horizontal = cv2.hconcat([oriImg, compareImg, canvas])
+
+        cv2.arrowedLine(canvas, start_point, end_point, color, thickness, tipLength=tip_length)
+
+    # horizontal = cv2.hconcat([oriImg, compareImg, canvas])
     if gpt:
         response = openai.ChatCompletion.create(
             model="gpt-4o-mini",
@@ -79,7 +81,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
         guide = response['choices'][0]['message']['content']
         
     
-    return horizontal, score, guide 
+    return canvas, score, guide 
     
 def getVectors(kps,limbSeq):
     return np.array([[kps[limbSeq[i][0]-1][0] - kps[limbSeq[i][1]-1][0],kps[limbSeq[i][0]-1][1] - kps[limbSeq[i][1]-1][1],kps[limbSeq[i][0]-1][2] + kps[limbSeq[i][1]-1][2]] if kps[limbSeq[i][0]-1][2]!=0 and kps[limbSeq[i][1]-1][2]!=0 else [0,0,0] for i in range(len(limbSeq))])

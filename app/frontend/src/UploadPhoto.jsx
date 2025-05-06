@@ -28,7 +28,7 @@ function UploadPhoto({ uploadedImage, onUpload }) {
                         <img
                             src={previewUrl}
                             alt="Uploaded"
-                            className="w-full h-80 object-cover transform transition-transform duration-300 hover:scale-105"
+                            className="w-full h-[480px] object-cover transform transition-transform duration-300 hover:scale-105"
                         />
                     </div>
 
