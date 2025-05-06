@@ -1,5 +1,5 @@
 import math
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form,Query
 from fastapi.responses import JSONResponse,StreamingResponse
 import motor.motor_asyncio
 from torchvision import transforms
@@ -140,10 +140,8 @@ async def upload_pose(file: UploadFile = File(...)):
         # buffer.seek(0)
         # processed_image_bytes = buffer.read()
         processed_image_bytes = await file.read()
-        print("********")
         # Upload processed image to Azure
         azure_url = await upload_to_azure(processed_image_bytes)
-        print("********")
         try:
         # Generate tags (use original full image or processed one — your choice)
             tags = await generate_tags_from_image(processed_image_bytes)
@@ -295,3 +293,119 @@ async def submit_feedback(
     if result.matched_count == 0:
         return JSONResponse(status_code=404, content={"error": "Pose not found"})
     return JSONResponse(content={"message": "Feedback received"}, status_code=200)
+
+
+
+@app.get("/search_poses")
+async def search_poses(q: str = Query(..., min_length=1)):
+    try:
+        keywords = q.lower().split()  # ["players", "baseball"]
+        
+        regex_conditions = [{"tags": {"$regex": kw, "$options": "i"}} for kw in keywords]
+
+        pipeline = [
+            # {
+            #     "$match": {
+            #         "$or": regex_conditions
+            #     }
+            # },
+            {
+                "$addFields": {
+                    "relevance": {
+                        "$size": {
+                            "$setIntersection": [
+                                "$tags",  # exact tags
+                                keywords  # still use raw tokens for now
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "$sort": {
+                    "relevance": -1,
+                    "popularity": -1
+                }
+            },
+            {
+                "$limit": 5
+            },
+            {
+                "$project": {
+                    "_id": {"$toString": "$_id"},
+                    "image_url": 1,
+                    "tags": 1,
+                    "relevance": 1,
+                    "popularity": 1
+                }
+            }
+        ]
+
+        results = await poses_collection.aggregate(pipeline).to_list(length=4)
+        response = [
+            {
+                "id": str(pose["_id"]),
+                "image_url": pose["image_url"]
+            }
+            for pose in results
+        ]
+        print(response)
+        return JSONResponse(content={"poses": response})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+    
+@app.post("/search_combined")
+async def search_combined(text: str = Form(None), image: UploadFile = File(None)):
+    keywords = text.lower().split() if text else []
+    image_vector = None
+
+    if image:
+        image_bytes = await image.read()
+        image_vector = embed_image(image_bytes)  # Use your model here
+        image_vector = np.array(image_vector).astype("float32").reshape(1, -1)
+
+        # Search by image vector
+        _, faiss_indices = index.search(image_vector, k=20)
+        faiss_id_subset = [ids[i] for i in faiss_indices[0]]
+        image_docs = await poses_collection.find({
+            "_id": {"$in": [ObjectId(x) for x in faiss_id_subset]}
+        }).to_list(length=20)
+    else:
+        image_docs = []
+
+    text_docs = []
+    if keywords:
+        text_docs = await poses_collection.find({
+            "tags": {"$in": keywords}
+        }).to_list(length=100)
+
+    combined = {}
+    alpha, beta = 0.5, 0.5  # Adjust weights
+
+    for doc in image_docs:
+        combined[str(doc["_id"])] = {"doc": doc, "image_score": 1.0, "text_score": 0.0}
+
+    for doc in text_docs:
+        doc_id = str(doc["_id"])
+        if doc_id not in combined:
+            combined[doc_id] = {"doc": doc, "image_score": 0.0, "text_score": 0.0}
+        match_count = len(set(doc["tags"]) & set(keywords))
+        combined[doc_id]["text_score"] = match_count / len(keywords)
+
+    results = sorted(
+        combined.values(),
+        key=lambda r: alpha * r["image_score"] + beta * r["text_score"],
+        reverse=True
+    )
+
+    return JSONResponse(content={
+        "results": [
+            {
+                "id": str(r["doc"]["_id"]),
+                "image_url": r["doc"]["image_url"],
+                "tags": r["doc"].get("tags", []),
+                "score": round(alpha * r["image_score"] + beta * r["text_score"], 3)
+            }
+            for r in results[:5]
+        ]
+    })
