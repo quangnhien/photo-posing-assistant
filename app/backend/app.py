@@ -361,7 +361,7 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
 
     if image:
         image_bytes = await image.read()
-        image_vector = embed_image(image_bytes)  # Use your model here
+        image_vector = await embed_image(image_bytes)  # Use your model here
         image_vector = np.array(image_vector).astype("float32").reshape(1, -1)
 
         # Search by image vector

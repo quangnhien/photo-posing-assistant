@@ -34,8 +34,7 @@ pipeline {
               cd photo-posing-assistant
               git pull
               cd model/pose_server
-              echo "Contents of .env:"
-              cat .env
+              chmod 600 .env
               cd ..
               docker compose down
               docker compose up -d --build
@@ -52,10 +51,12 @@ pipeline {
       steps {
         withCredentials([
           sshUserPrivateKey(credentialsId: "${SSH_KEY_ID}", keyFileVariable: 'KEY'),
-          file(credentialsId: 'PROD_BACKEND_ENV_FILE', variable: 'BACKEND_ENV')
+          file(credentialsId: 'PROD_BACKEND_ENV_FILE', variable: 'BACKEND_ENV'),
+          file(credentialsId: 'PROD_FRONTEND_ENV_FILE', variable: 'FRONTEND_ENV')
         ]) {
           sh """
             scp -o StrictHostKeyChecking=no -i $KEY \$BACKEND_ENV azureuser@$SERVER_IP:/home/azureuser/photo-posing-assistant/app/backend/.env
+            scp -o StrictHostKeyChecking=no -i $KEY \$FRONTEND_ENV azureuser@$SERVER_IP:/home/azureuser/photo-posing-assistant/app/frontend/.env
 
             ssh -o StrictHostKeyChecking=no -i $KEY azureuser@$SERVER_IP '
               echo "✅ Connected to remote server"
