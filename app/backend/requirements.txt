@@ -14,4 +14,4 @@ httpx
 dotenv
 azure-storage-blob
 torchvision
-faiss
+faiss-cpu
