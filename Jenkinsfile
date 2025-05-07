@@ -64,6 +64,8 @@ pipeline {
               git pull
               cd app/backend
               chmod 600 .env
+              cd ../frontend
+              chmod 600 .env
               cd ..
               docker compose down
               docker compose up -d --build

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 function AdminPanel() {
   const [image, setImage] = useState(null);
+  const [location, setLocation] = useState('');
+
   const [previewUrl, setPreviewUrl] = useState(null);
   const [tags, setTags] = useState([]);
 
@@ -20,6 +22,11 @@ function AdminPanel() {
 
     const formData = new FormData();
     formData.append('file', image);
+    if (location.trim()) {
+      formData.append('location', location.trim());
+    }
+
+
 
     try {
       const response = await fetch('http://localhost:8000/upload_pose', {
@@ -45,7 +52,15 @@ function AdminPanel() {
   return (
     <div className="text-center">
       <h2 className="text-2xl font-bold mb-4 text-indigo-600">Admin Panel - Upload Poses</h2>
-
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Enter location (optional)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border px-3 py-2 rounded w-1/3"
+        />
+      </div>
       <input
         type="file"
         accept="image/*"
@@ -81,7 +96,7 @@ function AdminPanel() {
                 key={index}
                 className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium"
               >
-                {'\'' + tag + '\''+ ","}
+                {'\'' + tag + '\'' + ","}
               </span>
             ))}
           </div>
