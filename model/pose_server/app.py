@@ -1,7 +1,5 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
-# import config
-# from src.body import Body 
 import cv2
 import numpy as np
 import mediapipe as mp
