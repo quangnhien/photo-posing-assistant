@@ -17,10 +17,13 @@ import base64
 from bson import ObjectId
 from fastapi import HTTPException
 from fastapi.params import Body
-
+import traceback
+import faiss
 from compare_keypoints import compare_keypoints
 from helper import download_image_as_pil,download_image_as_np_array,resize_image
 import numpy as np
+
+
 load_dotenv()
 
 app = FastAPI()
@@ -58,6 +61,17 @@ resize_crop_transform = transforms.Compose([
     transforms.CenterCrop(384)
 ])
 
+# # Load image vectors and their IDs
+# docs = poses_collection.find({}, {"_id": 1, "vector": 1}).to_list(None)
+# print(docs)
+# ids = [str(doc["_id"]) for doc in docs]
+# vectors = np.array([doc["vector"] for doc in docs]).astype("float32")
+
+# # Create FAISS index
+# dimension = vectors.shape[1]
+# index = faiss.IndexFlatL2(dimension)  # You can use IndexIVFFlat for large datasets
+# index.add(vectors)
+
 
 # Helper: Embed Image (for vector embedding only)
 async def embed_image(image_bytes):
@@ -92,6 +106,7 @@ async def generate_poses(image_bytes,image_url=None):
 async def generate_tags_from_image(image_bytes):
     async with httpx.AsyncClient() as client:
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
+        print(BLIP2_ENDPOINT)
         response = await client.post(BLIP2_ENDPOINT, files=files)
         
         if response.status_code == 200:
@@ -123,55 +138,48 @@ async def upload_to_azure(processed_image_bytes, extension='jpg',container_name 
 
 
 @app.post("/upload_pose")
-async def upload_pose(file: UploadFile = File(...)):
+async def upload_pose(
+    file: UploadFile = File(...),
+    location: str = Form(None)  # Optional location field
+):
     try:
-        # original_contents = await file.read()
-
-        # # Open original image
-        # image = Image.open(io.BytesIO(original_contents)).convert('RGB')
-
-        # # Resize + CenterCrop 
-        # processed_image = resize_crop_transform(image)
-
-        # # Save processed image to bytes buffer
-        # buffer = io.BytesIO()
-        # # You can adjust quality
-        # processed_image.save(buffer, format='JPEG', quality=95)
-        # buffer.seek(0)
-        # processed_image_bytes = buffer.read()
         processed_image_bytes = await file.read()
-        # Upload processed image to Azure
+
+        # Upload to Azure
         azure_url = await upload_to_azure(processed_image_bytes)
+        
         try:
-        # Generate tags (use original full image or processed one — your choice)
             tags = await generate_tags_from_image(processed_image_bytes)
-
-            # Extrect poses (use processed 224x224 image)
             poses = await generate_poses(processed_image_bytes)
-
-            # Generate vector (use processed 224x224 image)
             vector = await embed_image(processed_image_bytes)
-
-            # Save everything to MongoDB
             pose_doc = {
                 "image_url": azure_url,
-                "popularity":0,
+                "popularity": 0,
                 "tags": tags,
                 "vector": vector,
                 "poses": poses,
-                "poses_confidence":sum(p[2] for p in poses) / len(poses)
+                "poses_confidence": sum(p[2] for p in poses) / len(poses),
+                "location": location  # will be None if not provided
             }
+            
             await poses_collection.insert_one(pose_doc)
 
-            return JSONResponse(content={"message": "Pose uploaded with auto-tags!", "tags": tags, "image_url": azure_url}, status_code=200)
+            return JSONResponse(content={
+                "message": "Pose uploaded with auto-tags!",
+                "tags": tags,
+                "image_url": azure_url
+            }, status_code=200)
+
         except Exception as e:
             await error_collection.insert_one({
                 "image_url": azure_url,
                 "error_message": str(e)
             })
+            return JSONResponse(content={"error": str(e)}, status_code=500)
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
 
 
 @app.get("/popular_poses")
@@ -241,7 +249,7 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
 
         # Compare and generate output image
         horizontal, score, guide = compare_keypoints(
-            modelPose["poses"], userPose, resize_image(modelImage), resize_image(userImg)
+            modelPose["poses"], userPose, modelImage, userImg
         )
 
         # Convert final image to base64
@@ -272,7 +280,7 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         })
 
     except Exception as e:
-        import traceback
+        
         print("Error during /compare:\n", traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -301,111 +309,203 @@ async def search_poses(q: str = Query(..., min_length=1)):
     try:
         keywords = q.lower().split()  # ["players", "baseball"]
         
-        regex_conditions = [{"tags": {"$regex": kw, "$options": "i"}} for kw in keywords]
+        response = await search_by_keywords(keywords)
+        
+        return JSONResponse(content={"poses": response})
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+    
+# @app.post("/search_combined")
+# async def search_combined(text: str = Form(None), image: UploadFile = File(None)):
+#     keywords = text.lower().split() if text else []
+#     image_vector = None
+
+#     if image:
+#         image_bytes = await image.read()
+#         image_vector = await embed_image(image_bytes)  # Use your model here
+#         image_vector = np.array(image_vector).astype("float32").reshape(1, -1)
+
+#         # Search by image vector
+#         _, faiss_indices = index.search(image_vector, k=20)
+#         faiss_id_subset = [ids[i] for i in faiss_indices[0]]
+#         image_docs = await poses_collection.find({
+#             "_id": {"$in": [ObjectId(x) for x in faiss_id_subset]}
+#         }).to_list(length=20)
+#     else:
+#         image_docs = []
+
+#     text_docs = []
+#     if keywords:
+#         text_docs = await poses_collection.find({
+#             "tags": {"$in": keywords}
+#         }).to_list(length=100)
+
+#     combined = {}
+#     alpha, beta = 0.5, 0.5  # Adjust weights
+
+#     for doc in image_docs:
+#         combined[str(doc["_id"])] = {"doc": doc, "image_score": 1.0, "text_score": 0.0}
+
+#     for doc in text_docs:
+#         doc_id = str(doc["_id"])
+#         if doc_id not in combined:
+#             combined[doc_id] = {"doc": doc, "image_score": 0.0, "text_score": 0.0}
+#         match_count = len(set(doc["tags"]) & set(keywords))
+#         combined[doc_id]["text_score"] = match_count / len(keywords)
+
+#     results = sorted(
+#         combined.values(),
+#         key=lambda r: alpha * r["image_score"] + beta * r["text_score"],
+#         reverse=True
+#     )
+
+#     return JSONResponse(content={
+#         "results": [
+#             {
+#                 "id": str(r["doc"]["_id"]),
+#                 "image_url": r["doc"]["image_url"],
+#                 "tags": r["doc"].get("tags", []),
+#                 "score": round(alpha * r["image_score"] + beta * r["text_score"], 3)
+#             }
+#             for r in results[:5]
+#         ]
+#     })
+from pymongo import DESCENDING
+
+@app.post("/search_combined")
+async def search_combined(text: str = Form(None), image: UploadFile = File(None)):
+    keywords = text.lower().split() if text else []
+    image_vector = None
+    image_docs = []
+
+    if image:
+        image_bytes = await image.read()
+        image_vector = await embed_image(image_bytes)
+        image_vector = [float(v) for v in image_vector]  # Ensure JSON-serializable
 
         pipeline = [
-            # {
-            #     "$match": {
-            #         "$or": regex_conditions
-            #     }
-            # },
             {
-                "$addFields": {
-                    "relevance": {
-                        "$size": {
-                            "$setIntersection": [
-                                "$tags",  # exact tags
-                                keywords  # still use raw tokens for now
-                            ]
-                        }
-                    }
+                "$vectorSearch": {
+                    "index": "vector_index",  # your index name
+                    "path": "vector",
+                    "queryVector": image_vector,
+                    "numCandidates": 100,
+                    "limit": 20
                 }
-            },
-            {
-                "$sort": {
-                    "relevance": -1,
-                    "popularity": -1
-                }
-            },
-            {
-                "$limit": 5
             },
             {
                 "$project": {
                     "_id": {"$toString": "$_id"},
                     "image_url": 1,
                     "tags": 1,
-                    "relevance": 1,
-                    "popularity": 1
+                    "score": {"$meta": "vectorSearchScore"}
                 }
             }
         ]
 
-        results = await poses_collection.aggregate(pipeline).to_list(length=4)
-        response = [
-            {
-                "id": str(pose["_id"]),
-                "image_url": pose["image_url"]
-            }
-            for pose in results
-        ]
-        print(response)
-        return JSONResponse(content={"poses": response})
-    except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
-    
-@app.post("/search_combined")
-async def search_combined(text: str = Form(None), image: UploadFile = File(None)):
-    keywords = text.lower().split() if text else []
-    image_vector = None
-
-    if image:
-        image_bytes = await image.read()
-        image_vector = await embed_image(image_bytes)  # Use your model here
-        image_vector = np.array(image_vector).astype("float32").reshape(1, -1)
-
-        # Search by image vector
-        _, faiss_indices = index.search(image_vector, k=20)
-        faiss_id_subset = [ids[i] for i in faiss_indices[0]]
-        image_docs = await poses_collection.find({
-            "_id": {"$in": [ObjectId(x) for x in faiss_id_subset]}
-        }).to_list(length=20)
-    else:
-        image_docs = []
+        image_docs = await poses_collection.aggregate(pipeline).to_list(length=20)
 
     text_docs = []
     if keywords:
-        text_docs = await poses_collection.find({
-            "tags": {"$in": keywords}
-        }).to_list(length=100)
-
+        text_docs = await search_by_keywords(keywords,20)
+    # Combine results by ID
     combined = {}
-    alpha, beta = 0.5, 0.5  # Adjust weights
+    alpha, beta = 0.7, 0.4
 
     for doc in image_docs:
-        combined[str(doc["_id"])] = {"doc": doc, "image_score": 1.0, "text_score": 0.0}
+        combined[doc["_id"]] = {
+            "doc": doc,
+            "image_score": doc["score"],
+            "text_score": 0.0
+        }
 
     for doc in text_docs:
-        doc_id = str(doc["_id"])
+        doc_id = str(doc["id"])
         if doc_id not in combined:
-            combined[doc_id] = {"doc": doc, "image_score": 0.0, "text_score": 0.0}
-        match_count = len(set(doc["tags"]) & set(keywords))
-        combined[doc_id]["text_score"] = match_count / len(keywords)
+            combined[doc_id] = {
+                "doc": doc,
+                "image_score": 0.0,
+                "text_score": 0.0
+            }
+        # match_count = len(set(doc.get("tags", [])) & set(keywords))
+        combined[doc_id]["text_score"] = doc["score"]
 
+    # Final sort by weighted score
     results = sorted(
         combined.values(),
         key=lambda r: alpha * r["image_score"] + beta * r["text_score"],
         reverse=True
     )
-
     return JSONResponse(content={
         "results": [
             {
-                "id": str(r["doc"]["_id"]),
+                "id": r["doc"]["_id"],
                 "image_url": r["doc"]["image_url"],
                 "tags": r["doc"].get("tags", []),
                 "score": round(alpha * r["image_score"] + beta * r["text_score"], 3)
             }
-            for r in results[:5]
+            for r in results[:4]
         ]
     })
+async def search_by_keywords(keywords,n=4):
+
+    pipeline = [
+        # {
+        #     "$match": {
+        #         "$or": regex_conditions
+        #     }
+        # },
+        {
+            "$addFields": {
+                "combined": {
+                    "$cond": {
+                        "if": {"$ne": ["$location", None]},
+                        "then": {"$concatArrays": ["$tags", ["$location"]]},
+                        "else": "$tags"
+                    }
+                }
+            }
+        },           
+        {
+            "$addFields": {
+                "score": {
+                    "$size": {
+                        "$setIntersection": [
+                            "$combined",  # exact tags
+                            keywords  # still use raw tokens for now
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "$sort": {
+                "score": -1,
+                "popularity": -1
+            }
+        },
+        {
+            "$limit": n
+        },
+        {
+            "$project": {
+                "_id": {"$toString": "$_id"},
+                "image_url": 1,
+                "tags": 1,
+                "score": 1,
+                "popularity": 1
+            }
+        }
+    ]
+
+    results = await poses_collection.aggregate(pipeline).to_list(length=4)
+    response = [
+        {
+            "id": str(pose["_id"]),
+            "image_url": pose["image_url"],
+            "score": pose['score']/len(pose["tags"]),
+            "popularity": pose['popularity'],
+        }
+        for pose in results
+    ]
+    return response

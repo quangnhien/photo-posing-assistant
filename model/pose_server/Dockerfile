@@ -12,13 +12,12 @@ COPY . .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 # Expose port
 EXPOSE 8003
 
 # Run the model download script
-RUN python download_model.py
+#RUN python download_model.py
 # Run server
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8003", "--reload"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8003"]

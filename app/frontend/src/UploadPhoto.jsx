@@ -11,13 +11,6 @@ function UploadPhoto({ uploadedImage, onUpload }) {
         }
     };
 
-    const resetUpload = () => {
-        onUpload(null);
-        setPreviewUrl(null);
-    };
-    const triggerFileInput = () => {
-        fileInputRef.current.click(); // 👈 programmatically open file picker
-    };
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-4">2️⃣ Upload Your Photo</h2>
