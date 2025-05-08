@@ -9,17 +9,17 @@ import torch
 import config
 import copy
 
-import openai
+#import openai
 
 
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import os
-load_dotenv()
+#load_dotenv()
 
 from src import util
 from src.model import bodypose_model
 
-openai.api_key = os.getenv('GPT_API_KEY')
+#openai.api_key = os.getenv('GPT_API_KEY')
 
 class Body(object):
     def __init__(self, model_path):

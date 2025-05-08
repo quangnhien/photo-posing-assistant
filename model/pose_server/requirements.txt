@@ -1,11 +1,12 @@
 numpy
 matplotlib
 opencv-python
-scipy
-scikit-image
-openai
+# scipy
+# scikit-image
+# openai
 fastapi
 uvicorn
 dotenv
 python-multipart
 azure-storage-blob
+mediapipe

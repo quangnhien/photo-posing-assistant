@@ -22,6 +22,8 @@ import faiss
 from compare_keypoints import compare_keypoints
 from helper import download_image_as_pil,download_image_as_np_array,resize_image
 import numpy as np
+
+
 load_dotenv()
 
 app = FastAPI()
@@ -147,13 +149,9 @@ async def upload_pose(
         azure_url = await upload_to_azure(processed_image_bytes)
         
         try:
-            print("*****")
             tags = await generate_tags_from_image(processed_image_bytes)
-            print(tags)
             poses = await generate_poses(processed_image_bytes)
-            print(tags)
             vector = await embed_image(processed_image_bytes)
-            print(tags)
             pose_doc = {
                 "image_url": azure_url,
                 "popularity": 0,
@@ -251,7 +249,7 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
 
         # Compare and generate output image
         horizontal, score, guide = compare_keypoints(
-            modelPose["poses"], userPose, resize_image(modelImage), resize_image(userImg)
+            modelPose["poses"], userPose, modelImage, userImg
         )
 
         # Convert final image to base64
