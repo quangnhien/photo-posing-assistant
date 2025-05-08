@@ -13,3 +13,4 @@ uuid
 httpx
 dotenv
 azure-storage-blob
+aiohttp
