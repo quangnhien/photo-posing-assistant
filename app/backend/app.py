@@ -115,7 +115,6 @@ async def upload_to_azure(processed_image_bytes, extension='jpg',container_name 
 
 # Main Upload API
 
-
 @app.post("/upload_pose")
 async def upload_pose(
     file: UploadFile = File(...),
