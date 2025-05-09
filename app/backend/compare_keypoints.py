@@ -3,6 +3,11 @@ import numpy as np
 import copy
 import cv2
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+client = openai.OpenAI(api_key=os.getenv('GPT_API_KEY'))
 limbSeqToCompare = [[2, 3], [2, 6], [3, 4], [4, 5], [6, 7], [7, 8], [2, 9], [9, 10], \
             [10, 11], [2, 12], [12, 13], [13, 14], [2, 1]]
 joinName = {
@@ -68,7 +73,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
 
     # horizontal = cv2.hconcat([oriImg, compareImg, canvas])
     if gpt:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": f'''You are a photographer and you are taking pictures of a client. 
@@ -78,7 +83,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
                     '''}
             ]
         )
-        guide = response['choices'][0]['message']['content']
+        guide = response.choices[0].message.content
         
     
     return canvas, score, guide 
