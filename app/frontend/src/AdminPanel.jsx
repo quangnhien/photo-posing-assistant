@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function AdminPanel() {
   const [image, setImage] = useState(null);
@@ -29,7 +30,7 @@ function AdminPanel() {
 
 
     try {
-      const response = await fetch('http://localhost:8000/upload_pose', {
+      const response = await fetch(`${API_BASE_URL}/upload_pose`, {
         method: 'POST',
         body: formData,
       });
