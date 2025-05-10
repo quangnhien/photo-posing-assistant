@@ -121,7 +121,8 @@ async def upload_pose(
 ):
     try:
         processed_image_bytes = await file.read()
-
+        if location:
+            location = location.split(" ")
         # Upload to Azure
         azure_url = await upload_to_azure(processed_image_bytes)
 
@@ -136,7 +137,7 @@ async def upload_pose(
                 "vector": vector,
                 "poses": poses,
                 "poses_confidence": sum(p[2] for p in poses) / len(poses),
-                "location": location  # will be None if not provided
+                "location": location 
             }
 
             await poses_collection.insert_one(pose_doc)
@@ -329,7 +330,7 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
         text_docs = await search_by_keywords(keywords, 20)
     # Combine results by ID
     combined = {}
-    alpha, beta = 0.7, 0.4
+    alpha, beta = 0.9, 0.1
 
     for doc in image_docs:
         combined[doc["_id"]] = {
@@ -375,7 +376,7 @@ async def search_by_keywords(keywords, n=4):
                 "combined": {
                     "$cond": {
                         "if": {"$ne": ["$location", None]},
-                        "then": {"$concatArrays": ["$tags", ["$location"]]},
+                        "then": {"$concatArrays": ["$tags", "$location"]},
                         "else": "$tags"
                     }
                 }

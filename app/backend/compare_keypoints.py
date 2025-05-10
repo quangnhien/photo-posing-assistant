@@ -95,8 +95,32 @@ def getAngleSetAndScore(vect1,vect2):
     denominator = np.sum(vect2[:,:2]*vect1[:,:2],1)
     angle = np.arctan2(denominator, numerator)
     angle = np.degrees(angle)
-    angle[angle!=0]-=90
+    # angle[angle!=0]-=90
+    angle[angle>0]-=90
+    angle[angle<-90]+=90
+    print(angle)
     return angle,1-sum(np.abs(angle))/(sum(angle!=0)*90)
+# def getAngleSetAndScore(vect1, vect2):
+#     """
+#     Computes angles between corresponding 2D vectors and returns a similarity score.
+#     """
+#     # Compute cross product (z-component) and dot product for angle
+#     cross = vect1[:,0] * vect2[:,1] - vect1[:,1] * vect2[:,0]  # scalar cross product (2D)
+#     dot = np.sum(vect1[:,:2] * vect2[:,:2], axis=1)           # dot product
+
+#     # Compute angle in degrees
+#     angles = np.degrees(np.arctan2(cross, dot))               # atan2(y, x)
+
+#     # Score: how close angles are to 90°, normalized
+#     non_zero_mask = angles != 0
+#     angles_adj = np.abs(angles[non_zero_mask] - 90)
+
+#     if angles_adj.size == 0:
+#         return angles, 1.0  # perfect score if no angles deviate
+
+#     score = 1 - np.sum(angles_adj) / (len(angles_adj) * 90)
+
+#     return angles, score
 def determineSizeMoving(angle):
     if angle<30:
         return "a little bit"
