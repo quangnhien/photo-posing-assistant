@@ -2,8 +2,45 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 import cv2
 import numpy as np
+from time import time
 import mediapipe as mp
 
+from opentelemetry import metrics
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
+from opentelemetry.metrics import set_meter_provider
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+from prometheus_client import start_http_server
+
+# Start Prometheus client
+start_http_server(port=8099, addr="0.0.0.0")
+# Service name is required for most backends
+resource = Resource(attributes={SERVICE_NAME: "pose-service"})
+# Exporter to export metrics to Prometheus
+reader = PrometheusMetricReader()
+# Meter is responsible for creating and recording metrics
+provider = MeterProvider(resource=resource, metric_readers=[reader])
+set_meter_provider(provider)
+meter = metrics.get_meter("pose", "0.1.2")
+
+# Create your first counter
+counter = meter.create_counter(
+    name="pose_request_counter",
+    description="Number of POSE requests"
+)
+
+histogram = meter.create_histogram(
+    name="pose_response_histogram",
+    description="POSE response histogram",
+    unit="seconds",
+)
+
+confident_score_histogram = meter.create_histogram(
+    name="pose_confident_score_histogram",
+    description="POSE confident score histogram",
+    unit="confidence",
+)
+# Start mediapipe
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(static_image_mode=True)
 index_map = {
@@ -29,6 +66,7 @@ index_map = {
 
 def convert_mediapipe_to_openpose(landmarks, image_width, image_height, visibility_threshold=0.5):
 
+    
     keypoints = np.zeros((18, 3), dtype=np.float32)
 
     # Map known keypoints
@@ -87,6 +125,9 @@ app = FastAPI(root_path="/")
 @app.post("/generate_keypoints")
 async def compare(file: UploadFile = File(...)):
     try:
+        starting_time = time()
+        # Labels for all metrics
+        
         contents = await file.read()
         contents = np.frombuffer(contents, np.uint8)
         contents = cv2.imdecode(contents, cv2.IMREAD_COLOR)
@@ -96,6 +137,18 @@ async def compare(file: UploadFile = File(...)):
 
         vector = convert_mediapipe_to_openpose(
             results.pose_landmarks.landmark, contents.shape[1], contents.shape[0])
+        
+        #Prometheus log
+        label = {"api": "/pose"}
+        # Increase the counter
+        counter.add(10, label)
+        # Mark the end of the response
+        ending_time = time()
+        elapsed_time = ending_time - starting_time
+        # Add histogram
+        histogram.record(elapsed_time, label)
+        confident_score_histogram.record(np.mean(vector[:, 2]), label)
+        
         return JSONResponse(content={"keypoints": vector.tolist()}, status_code=200)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)

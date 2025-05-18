@@ -1,0 +1,66 @@
+# groups:
+# - name: System alerts
+#   rules:
+#   - alert: NodeOutOfMemory
+#     expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 5
+#     for: 1m
+#     labels:
+#       severity: warning
+#     annotations:
+#       summary: Node out of memory
+#       description: Node memory has reached {{ humanize $value}}%
+
+# - name: Containers
+#   rules:
+#   - alert: OCRHighMemory
+#     expr: sum(rate(container_cpu_usage_seconds_total{name="demo-metrics"}[5m]))*100 > 100
+#     for: 30s # Send out noti if the condition is true for more than 30 seconds
+#     labels:
+#       severity: warning
+#     annotations:
+#       summary: OCR high cpu usage
+#       description: OCR cpu consumption is at {{ humanize $value}}%
+  
+# - name: ConfidentScore
+#   rules:
+#   - alert: ConfidentScore
+#     expr: rate(pose_confident_score_histogram_confidence_sum[$__rate_interval])/rate(pose_confident_score_histogram_confidence_count[$__rate_interval])<0.7
+#     for: 2s # Send out noti if the condition is true for more than 30 seconds
+#     labels:
+#       severity: warning
+#     annotations:
+#       summary: ConfidentScore
+#       description: ConfidentScore is low at {{ humanize $value}}%
+groups:
+  - name: System alerts
+    rules:
+      - alert: NodeOutOfMemory
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: Node out of memory
+          description: Node memory has reached {{ humanize $value }}%
+
+  - name: Containers
+    rules:
+      - alert: OCRHighMemory
+        expr: sum(rate(container_cpu_usage_seconds_total{name="demo-metrics"}[5m])) * 100 > 100
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: OCR high cpu usage
+          description: OCR cpu consumption is at {{ humanize $value }}%
+
+  - name: ConfidentScore
+    rules:
+      - alert: ConfidentScore
+        expr: rate(pose_confident_score_histogram_confidence_sum[1m]) / rate(pose_confident_score_histogram_confidence_count[1m]) > 0.7
+        for: 2s
+        labels:
+          severity: warning
+        annotations:
+          summary: ConfidentScore
+          description: ConfidentScore is low at {{ humanize $value }}%
