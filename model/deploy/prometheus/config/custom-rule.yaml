@@ -1,0 +1,11 @@
+groups:
+- name: ConfidentScore
+  rules:
+  - alert: ConfidentScore
+    expr: "rate(pose_confident_score_histogram_confidence_sum[1m]) / rate(pose_confident_score_histogram_confidence_count[1m]) > 0.7"
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "ConfidentScore"
+      description: "ConfidentScore is low at {{ humanize $value }}%."

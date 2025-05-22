@@ -3,6 +3,11 @@ import numpy as np
 import copy
 import cv2
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+client = openai.OpenAI(api_key=os.getenv('GPT_API_KEY'))
 limbSeqToCompare = [[2, 3], [2, 6], [3, 4], [4, 5], [6, 7], [7, 8], [2, 9], [9, 10], \
             [10, 11], [2, 12], [12, 13], [13, 14], [2, 1]]
 joinName = {
@@ -68,7 +73,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
 
     # horizontal = cv2.hconcat([oriImg, compareImg, canvas])
     if gpt:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": f'''You are a photographer and you are taking pictures of a client. 
@@ -78,7 +83,7 @@ def compare_keypoints(keypoints1,keypoints2,oriImg,compareImg,guide=True,gpt=Tru
                     '''}
             ]
         )
-        guide = response['choices'][0]['message']['content']
+        guide = response.choices[0].message.content
         
     
     return canvas, score, guide 
@@ -90,8 +95,32 @@ def getAngleSetAndScore(vect1,vect2):
     denominator = np.sum(vect2[:,:2]*vect1[:,:2],1)
     angle = np.arctan2(denominator, numerator)
     angle = np.degrees(angle)
-    angle[angle!=0]-=90
+    # angle[angle!=0]-=90
+    angle[angle>0]-=90
+    angle[angle<-90]+=90
+    print(angle)
     return angle,1-sum(np.abs(angle))/(sum(angle!=0)*90)
+# def getAngleSetAndScore(vect1, vect2):
+#     """
+#     Computes angles between corresponding 2D vectors and returns a similarity score.
+#     """
+#     # Compute cross product (z-component) and dot product for angle
+#     cross = vect1[:,0] * vect2[:,1] - vect1[:,1] * vect2[:,0]  # scalar cross product (2D)
+#     dot = np.sum(vect1[:,:2] * vect2[:,:2], axis=1)           # dot product
+
+#     # Compute angle in degrees
+#     angles = np.degrees(np.arctan2(cross, dot))               # atan2(y, x)
+
+#     # Score: how close angles are to 90°, normalized
+#     non_zero_mask = angles != 0
+#     angles_adj = np.abs(angles[non_zero_mask] - 90)
+
+#     if angles_adj.size == 0:
+#         return angles, 1.0  # perfect score if no angles deviate
+
+#     score = 1 - np.sum(angles_adj) / (len(angles_adj) * 90)
+
+#     return angles, score
 def determineSizeMoving(angle):
     if angle<30:
         return "a little bit"

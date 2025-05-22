@@ -13,5 +13,4 @@ uuid
 httpx
 dotenv
 azure-storage-blob
-torchvision
-faiss-cpu
+aiohttp

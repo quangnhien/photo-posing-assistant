@@ -8,7 +8,36 @@ from string import punctuation
 
 import nltk
 from nltk.tokenize import word_tokenize
+from time import time
+from opentelemetry import metrics
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
+from opentelemetry.metrics import set_meter_provider
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+from prometheus_client import start_http_server
 
+# Start Prometheus client
+start_http_server(port=8099, addr="0.0.0.0")
+# Service name is required for most backends
+resource = Resource(attributes={SERVICE_NAME: "pose-service"})
+# Exporter to export metrics to Prometheus
+reader = PrometheusMetricReader()
+# Meter is responsible for creating and recording metrics
+provider = MeterProvider(resource=resource, metric_readers=[reader])
+set_meter_provider(provider)
+meter = metrics.get_meter("pose", "0.1.2")
+
+# Create your first counter
+counter = meter.create_counter(
+    name="pose_request_counter",
+    description="Number of POSE requests"
+)
+
+histogram = meter.create_histogram(
+    name="pose_response_histogram",
+    description="POSE response histogram",
+    unit="seconds",
+)
 
 app = FastAPI()
 STOP_WORDS = {
@@ -52,8 +81,19 @@ def generate_caption(image_bytes):
 @app.post("/generate_caption")
 async def generate_caption_api(file: UploadFile = File(...)):
     try:
+        starting_time = time()
         contents = await file.read()
         caption = generate_caption(contents)
+        
+        #Prometheus log
+        label = {"api": "/blip"}
+        # Increase the counter
+        counter.add(10, label)
+        # Mark the end of the response
+        ending_time = time()
+        elapsed_time = ending_time - starting_time
+        # Add histogram
+        histogram.record(elapsed_time, label)
         return JSONResponse(content={"caption": caption}, status_code=200)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)

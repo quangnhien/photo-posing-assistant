@@ -4,17 +4,11 @@ Photo Posing Assistant is a web application designed to help tourists take bette
 
 ## 🚀 **Features**
 
-- 🌍 **Location-based Pose Suggestions**: 
-Find the most liked and creative photo poses from fellow tourists at your current or selected attraction.
-
+- 🧠 **Pose Searching**:
+Search for poses by entering keywords about the location, your outfit, or desired style, uploading a landscape photo of your chosen location, or using both.
 - 🧍‍♂️ **Pose Guidance**: 
- Step-by-step visual or textual instructions to help you replicate great poses.
+Step-by-step visual or textual instructions to help you replicate great poses.
 
-- 🧠 **AI Photo Grading**:
-Upload your photo to receive feedback and a grade based on pose accuracy, framing, and aesthetics.
-
-- ❤️ **Pose Ratings and Favorites**:
-    Vote for poses you love and save your favorites for future trips.
 
 ## 📸 Demo
 **Pose Guidance and AI Photo Grading**

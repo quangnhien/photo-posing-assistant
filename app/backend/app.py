@@ -1,8 +1,7 @@
 import math
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form,Query
-from fastapi.responses import JSONResponse,StreamingResponse
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Query
+from fastapi.responses import JSONResponse
 import motor.motor_asyncio
-from torchvision import transforms
 from PIL import Image
 import cv2
 from azure.storage.blob import BlobServiceClient
@@ -15,12 +14,10 @@ import httpx
 from fastapi.middleware.cors import CORSMiddleware
 import base64
 from bson import ObjectId
-from fastapi import HTTPException
 from fastapi.params import Body
 import traceback
-import faiss
 from compare_keypoints import compare_keypoints
-from helper import download_image_as_pil,download_image_as_np_array,resize_image
+from helper import download_image_as_np_array
 import numpy as np
 
 
@@ -54,25 +51,6 @@ blob_service_client = BlobServiceClient.from_connection_string(
     AZURE_STORAGE_CONNECTION_STRING)
 
 
-
-# Resize + CenterCrop Transform (for processed image saved to Azure)
-resize_crop_transform = transforms.Compose([
-    transforms.Resize(384, interpolation=transforms.InterpolationMode.BICUBIC),
-    transforms.CenterCrop(384)
-])
-
-# # Load image vectors and their IDs
-# docs = poses_collection.find({}, {"_id": 1, "vector": 1}).to_list(None)
-# print(docs)
-# ids = [str(doc["_id"]) for doc in docs]
-# vectors = np.array([doc["vector"] for doc in docs]).astype("float32")
-
-# # Create FAISS index
-# dimension = vectors.shape[1]
-# index = faiss.IndexFlatL2(dimension)  # You can use IndexIVFFlat for large datasets
-# index.add(vectors)
-
-
 # Helper: Embed Image (for vector embedding only)
 async def embed_image(image_bytes):
     async with httpx.AsyncClient() as client:
@@ -86,7 +64,7 @@ async def embed_image(image_bytes):
 # Helper: Extract pose
 
 
-async def generate_poses(image_bytes,image_url=None):
+async def generate_poses(image_bytes, image_url=None):
     async with httpx.AsyncClient() as client:
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
         response = await client.post(POSE_ENDPOINT, files=files)
@@ -95,9 +73,9 @@ async def generate_poses(image_bytes,image_url=None):
         else:
             if image_url:
                 await error_collection.insert_one({
-                "image_url": image_url,
-                "error_message": str(response.text)
-            })
+                    "image_url": image_url,
+                    "error_message": str(response.text)
+                })
             raise Exception(f"PoseModel Server Error: {response.text}")
 
 # Helper: Generate Tags from Image
@@ -108,7 +86,7 @@ async def generate_tags_from_image(image_bytes):
         files = {'file': ('image.jpg', image_bytes, 'image/jpeg')}
         print(BLIP2_ENDPOINT)
         response = await client.post(BLIP2_ENDPOINT, files=files)
-        
+
         if response.status_code == 200:
             caption = response.json()['caption']
 
@@ -122,13 +100,12 @@ async def generate_tags_from_image(image_bytes):
 # Helper: Upload processed image bytes to Azure
 
 
-async def upload_to_azure(processed_image_bytes, extension='jpg',container_name = os.getenv('AZURE_STORAGE_IMAGE_CONTAINER_NAME')):
+async def upload_to_azure(processed_image_bytes, extension='jpg', container_name=os.getenv('AZURE_STORAGE_IMAGE_CONTAINER_NAME')):
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     random_id = uuid.uuid4().hex[:10]
     new_filename = f"pose_{timestamp}_{random_id}.{extension}"
 
-    container_client = blob_service_client.get_container_client(
-        container_name)
+    container_client = blob_service_client.get_container_client(container_name)
     blob_client = container_client.get_blob_client(new_filename)
     blob_client.upload_blob(processed_image_bytes, overwrite=True)
     blob_url = blob_client.url
@@ -144,10 +121,11 @@ async def upload_pose(
 ):
     try:
         processed_image_bytes = await file.read()
-
+        if location:
+            location = location.split(" ")
         # Upload to Azure
         azure_url = await upload_to_azure(processed_image_bytes)
-        
+
         try:
             tags = await generate_tags_from_image(processed_image_bytes)
             poses = await generate_poses(processed_image_bytes)
@@ -159,9 +137,9 @@ async def upload_pose(
                 "vector": vector,
                 "poses": poses,
                 "poses_confidence": sum(p[2] for p in poses) / len(poses),
-                "location": location  # will be None if not provided
+                "location": location 
             }
-            
+
             await poses_collection.insert_one(pose_doc)
 
             return JSONResponse(content={
@@ -175,11 +153,12 @@ async def upload_pose(
                 "image_url": azure_url,
                 "error_message": str(e)
             })
+            print("Error during /compare:\n", traceback.format_exc())
             return JSONResponse(content={"error": str(e)}, status_code=500)
 
     except Exception as e:
+        print("Error during /compare:\n", traceback.format_exc())
         return JSONResponse(content={"error": str(e)}, status_code=500)
-
 
 
 @app.get("/popular_poses")
@@ -201,6 +180,7 @@ async def get_popular_poses():
         ]
         return JSONResponse(content={"poses": response})
     except Exception as e:
+        print("Error during /compare:\n", traceback.format_exc())
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
@@ -213,11 +193,14 @@ async def increment_popularity(pose_id: str = Body(..., embed=True)):
         )
 
         if result.matched_count == 0:
+            
             raise HTTPException(status_code=404, detail="Pose not found")
 
         return JSONResponse(content={"message": "Popularity incremented"}, status_code=200)
     except Exception as e:
+        print("Error during /compare:\n", traceback.format_exc())
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
 
 @app.post("/compare")
 async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...)):
@@ -229,7 +212,7 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         if not modelPose:
             raise HTTPException(status_code=404, detail="Pose not found")
 
-        modelImage = await download_image_as_np_array(modelPose["image_url"])  
+        modelImage = await download_image_as_np_array(modelPose["image_url"])
 
         # Read and process user image
         user_image_bytes = await userImage.read()
@@ -237,15 +220,8 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         nparr = np.frombuffer(user_image_bytes, np.uint8)
         userImg = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         userImg = cv2.cvtColor(userImg, cv2.COLOR_BGR2RGB)
-        # user_image_pil = Image.open(io.BytesIO(user_image_bytes)).convert("RGB")
-        # processed_image = resize_crop_transform(user_image_pil)
-        
-        # buffer = io.BytesIO()
-        # processed_image.save(buffer, format='JPEG', quality=95)
-        # buffer.seek(0)
-        # processed_user_image_bytes = buffer.read()
 
-        userPose = await generate_poses(user_image_bytes,user_image_url)
+        userPose = await generate_poses(user_image_bytes, user_image_url)
 
         # Compare and generate output image
         horizontal, score, guide = compare_keypoints(
@@ -255,32 +231,32 @@ async def compare_pose(pose: str = Form(...), userImage: UploadFile = File(...))
         # Convert final image to base64
         output_buffer = io.BytesIO()
         Image.fromarray(horizontal).save(output_buffer, format="JPEG")
-        #Image.fromarray(cv2.cvtColor(horizontal, cv2.COLOR_BGR2RGB)).save(output_buffer, format="JPEG")
-        encoded_image = base64.b64encode(output_buffer.getvalue()).decode("utf-8")
-        
+        encoded_image = base64.b64encode(
+            output_buffer.getvalue()).decode("utf-8")
+
         if not math.isfinite(score):  # catches NaN, inf, -inf
             score = 1
             # Save everything to MongoDB
-            
+
         pose_doc = {
             "model_image_url": modelPose["image_url"],
-            "user_image_url":user_image_url,
-            "guide_image_url": await upload_to_azure(encoded_image,container_name = os.getenv('AZURE_STORAGE_GUIDE_IMAGE_CONTAINER_NAME')),
+            "user_image_url": user_image_url,
+            "guide_image_url": await upload_to_azure(encoded_image, container_name=os.getenv('AZURE_STORAGE_GUIDE_IMAGE_CONTAINER_NAME')),
             "guide": guide,
             "score": round(score, 2),
-            "user_pose":userPose,
-            "pose_confidence":sum(p[2] for p in userPose) / len(userPose)
+            "user_pose": userPose,
+            "pose_confidence": sum(p[2] for p in userPose) / len(userPose)
         }
         result = await compare_collection.insert_one(pose_doc)
         return JSONResponse(content={
             "image_base64": encoded_image,
             "score": round(score, 2),
             "guide": guide,
-            "id":str(result.inserted_id)
+            "id": str(result.inserted_id)
         })
 
     except Exception as e:
-        
+
         print("Error during /compare:\n", traceback.format_exc())
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -303,74 +279,17 @@ async def submit_feedback(
     return JSONResponse(content={"message": "Feedback received"}, status_code=200)
 
 
-
 @app.get("/search_poses")
 async def search_poses(q: str = Query(..., min_length=1)):
     try:
         keywords = q.lower().split()  # ["players", "baseball"]
-        
+
         response = await search_by_keywords(keywords)
-        
+
         return JSONResponse(content={"poses": response})
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
-    
-# @app.post("/search_combined")
-# async def search_combined(text: str = Form(None), image: UploadFile = File(None)):
-#     keywords = text.lower().split() if text else []
-#     image_vector = None
 
-#     if image:
-#         image_bytes = await image.read()
-#         image_vector = await embed_image(image_bytes)  # Use your model here
-#         image_vector = np.array(image_vector).astype("float32").reshape(1, -1)
-
-#         # Search by image vector
-#         _, faiss_indices = index.search(image_vector, k=20)
-#         faiss_id_subset = [ids[i] for i in faiss_indices[0]]
-#         image_docs = await poses_collection.find({
-#             "_id": {"$in": [ObjectId(x) for x in faiss_id_subset]}
-#         }).to_list(length=20)
-#     else:
-#         image_docs = []
-
-#     text_docs = []
-#     if keywords:
-#         text_docs = await poses_collection.find({
-#             "tags": {"$in": keywords}
-#         }).to_list(length=100)
-
-#     combined = {}
-#     alpha, beta = 0.5, 0.5  # Adjust weights
-
-#     for doc in image_docs:
-#         combined[str(doc["_id"])] = {"doc": doc, "image_score": 1.0, "text_score": 0.0}
-
-#     for doc in text_docs:
-#         doc_id = str(doc["_id"])
-#         if doc_id not in combined:
-#             combined[doc_id] = {"doc": doc, "image_score": 0.0, "text_score": 0.0}
-#         match_count = len(set(doc["tags"]) & set(keywords))
-#         combined[doc_id]["text_score"] = match_count / len(keywords)
-
-#     results = sorted(
-#         combined.values(),
-#         key=lambda r: alpha * r["image_score"] + beta * r["text_score"],
-#         reverse=True
-#     )
-
-#     return JSONResponse(content={
-#         "results": [
-#             {
-#                 "id": str(r["doc"]["_id"]),
-#                 "image_url": r["doc"]["image_url"],
-#                 "tags": r["doc"].get("tags", []),
-#                 "score": round(alpha * r["image_score"] + beta * r["text_score"], 3)
-#             }
-#             for r in results[:5]
-#         ]
-#     })
-from pymongo import DESCENDING
 
 @app.post("/search_combined")
 async def search_combined(text: str = Form(None), image: UploadFile = File(None)):
@@ -381,7 +300,8 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
     if image:
         image_bytes = await image.read()
         image_vector = await embed_image(image_bytes)
-        image_vector = [float(v) for v in image_vector]  # Ensure JSON-serializable
+        # Ensure JSON-serializable
+        image_vector = [float(v) for v in image_vector]
 
         pipeline = [
             {
@@ -407,10 +327,10 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
 
     text_docs = []
     if keywords:
-        text_docs = await search_by_keywords(keywords,20)
+        text_docs = await search_by_keywords(keywords, 20)
     # Combine results by ID
     combined = {}
-    alpha, beta = 0.7, 0.4
+    alpha, beta = 0.9, 0.1
 
     for doc in image_docs:
         combined[doc["_id"]] = {
@@ -427,7 +347,6 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
                 "image_score": 0.0,
                 "text_score": 0.0
             }
-        # match_count = len(set(doc.get("tags", [])) & set(keywords))
         combined[doc_id]["text_score"] = doc["score"]
 
     # Final sort by weighted score
@@ -447,25 +366,22 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
             for r in results[:4]
         ]
     })
-async def search_by_keywords(keywords,n=4):
+
+
+async def search_by_keywords(keywords, n=4):
 
     pipeline = [
-        # {
-        #     "$match": {
-        #         "$or": regex_conditions
-        #     }
-        # },
         {
             "$addFields": {
                 "combined": {
                     "$cond": {
                         "if": {"$ne": ["$location", None]},
-                        "then": {"$concatArrays": ["$tags", ["$location"]]},
+                        "then": {"$concatArrays": ["$tags", "$location"]},
                         "else": "$tags"
                     }
                 }
             }
-        },           
+        },
         {
             "$addFields": {
                 "score": {
