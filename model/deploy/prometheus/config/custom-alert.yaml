@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-alerts
+  namespace: default  # change if your Prometheus is in another namespace
+  labels:
+    release: prometheus  # this must match your Prometheus release name
+spec:
+  groups:
+  - name: ConfidentScore
+    rules:
+    - alert: ConfidentScore
+      expr: "rate(pose_confident_score_histogram_confidence_sum[1m]) / rate(pose_confident_score_histogram_confidence_count[1m]) > 0.7"
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "ConfidentScore"
+        description: "ConfidentScore is low at {{ humanize $value }}%."

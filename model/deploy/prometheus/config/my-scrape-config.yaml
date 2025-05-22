@@ -1,0 +1,14 @@
+- job_name: 'otel-pose-metrics'
+  scrape_interval: 10s
+  static_configs:
+    - targets: ['pose:8099']
+
+- job_name: 'otel-clip-metrics'
+  scrape_interval: 10s
+  static_configs:
+    - targets: ['clip:8099']
+
+- job_name: 'otel-blip2-metrics'
+  scrape_interval: 10s
+  static_configs:
+    - targets: ['blip2:8099']

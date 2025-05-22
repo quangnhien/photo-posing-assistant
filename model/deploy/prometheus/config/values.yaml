@@ -1,0 +1,28 @@
+serverFiles:
+  alerting_rules.yml:
+    groups:
+    - name: ConfidentScore
+      rules:
+      - alert: ConfidentScore
+        expr: rate(pose_confident_score_histogram_confidence_sum[5m]) / rate(pose_confident_score_histogram_confidence_count[5m]) > 0.7
+        for: 2s
+        labels:
+          severity: warning
+        annotations:
+          summary: "ConfidentScore"
+          description: "ConfidentScore is low at {{ humanize $value }}%."
+
+alertmanager:
+  enabled: true
+  config:
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: discord
+      repeat_interval: 15s
+
+    receivers:
+    - name: discord
+      discord_configs:
+        - webhook_url: "https://discord.com/api/webhooks/1373766563941060729/ihV-uFOunVKaNgz7IBnmIAQo1_R8851ehe2v6piEXmcfi_CMLxpfj6HM__HOf_G7AvoE"
