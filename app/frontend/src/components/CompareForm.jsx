@@ -37,17 +37,17 @@ function CompareForm({ selectedPose, uploadedImage }) {
         body: formData,
       });
       const data = await response.json();
-      if (response.ok){
+      if (response.ok) {
         const imageUrl = `data:image/jpeg;base64,${data.image_base64}`;
 
         setImageUrl(imageUrl);
         setScore(data.score);
         setGuide(data.guide);
         setId(data.id)
-      }else{
+      } else {
         alert(`Oops! We couldn’t detect your pose in this photo. Please try uploading another one. Thanks a bunch!`);
       }
-      
+
     } catch (error) {
       console.error('Upload error:', error);
     } finally {

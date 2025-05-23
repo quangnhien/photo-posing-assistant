@@ -57,11 +57,11 @@ function PoseGallery({ selectedPose, onSelectPose }) {
 
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center p-6 space-y-4">
       <h2 className="text-2xl font-semibold mb-4">1️⃣ Choose a Pose</h2>
 
       {/* Search input and image upload */}
-      {!selectedPose &&<div className="mb-4 flex flex-col sm:flex-row gap-2 items-center">
+      {!selectedPose &&<div className="mb-4 flex flex-col gap-2 items-center">
         {/* Keyword input (live search) */}
         <input
           type="text" 
@@ -86,7 +86,7 @@ function PoseGallery({ selectedPose, onSelectPose }) {
           }}
 
         />
-        <label htmlFor="image-upload" className="cursor-pointer px-4 py-2 bg-indigo-100 border border-indigo-300 rounded-full text-indigo-700 font-medium text-sm hover:bg-indigo-200">
+        <label htmlFor="image-upload" className="inline-flex items-center cursor-pointer px-4 py-2 bg-indigo-100 border border-indigo-300 rounded-full text-indigo-700 font-medium text-sm hover:bg-indigo-200">
           📷 Choose Image
         </label>
         {previewUrl && (
