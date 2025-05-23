@@ -168,7 +168,7 @@ async def get_popular_poses():
             {},
             # Projection: include only _id and image_url
             {"_id": 1, "image_url": 1}
-        ).sort("popularity", -1).limit(4)
+        ).sort("popularity", -1).limit(10)
 
         top_poses = await top_poses_cursor.to_list(length=4)
         response = [
@@ -368,7 +368,7 @@ async def search_combined(text: str = Form(None), image: UploadFile = File(None)
     })
 
 
-async def search_by_keywords(keywords, n=4):
+async def search_by_keywords(keywords, n=10):
 
     pipeline = [
         {
