@@ -57,7 +57,7 @@ function PoseGallery({ selectedPose, onSelectPose }) {
 
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 space-y-4">
+    <div className="flex flex-col items-center justify-center sm:p-6 space-y-4">
       <h2 className="text-2xl font-semibold mb-4">1️⃣ Choose a Pose</h2>
 
       {/* Search input and image upload */}
@@ -95,7 +95,7 @@ function PoseGallery({ selectedPose, onSelectPose }) {
             <img
               src={previewUrl}
               alt="Selected"
-              className="w-40 h-[160px] object-cover rounded-xl border shadow-sm"
+              className="w-40 sm:h-[160px] object-cover rounded-xl border shadow-sm"
             />
           </div>
         )}
@@ -119,11 +119,11 @@ function PoseGallery({ selectedPose, onSelectPose }) {
 
       {selectedPose ? (
         <div className="relative">
-          <div className="overflow-hidden rounded-2xl shadow-md">
+          <div className="overflow-hidden rounded shadow-md">
             <img
               src={selectedPose.image_url}
               alt="Selected Pose"
-              className="w-full h-[480px] object-cover transform transition-transform duration-300 hover:scale-105"
+              className="w-full sm:h-[480px] object-cover transform transition-transform duration-300 hover:scale-105"
             />
           </div>
           <button
@@ -134,17 +134,17 @@ function PoseGallery({ selectedPose, onSelectPose }) {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="max-h-[500px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-white/50 p-4 rounded-xl shadow-md">
           {poses.map(pose => (
             <div
               key={pose.id}
               onClick={() => onSelectPose(pose)}
-              className="cursor-pointer overflow-hidden rounded-2xl shadow-md"
+              className="cursor-pointer overflow-hidden rounded shadow-md"
             >
               <img
                 src={pose.image_url}
                 alt={`Pose ${pose.id}`}
-                className="w-full h-[320px] object-cover transform transition-transform duration-300 hover:scale-105"
+                className="w-full sm:h-[320px] object-cover transform transition-transform duration-300 hover:scale-105"
               />
             </div>
           ))}

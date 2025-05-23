@@ -77,7 +77,9 @@ function CompareForm({ selectedPose, uploadedImage }) {
 
       {imageUrl && (
         <div className="mt-6 text-center space-y-3">
-          <img src={imageUrl} alt="Pose result" className="rounded-lg shadow-md max-w-md mx-auto" />
+          <div className="flex justify-center items-center sm:max-w-3xl mx-auto">
+            <img src={imageUrl} alt="Pose result" className="rounded shadow-md w-full h-auto " />
+          </div>
           <div className="text-lg text-gray-700">
             <p><strong>Score:</strong> {score}</p>
             <p><strong>Guide:</strong> {guide}</p>
