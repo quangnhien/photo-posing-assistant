@@ -1,16 +1,33 @@
+# Core ML and Data Tools
 numpy
-matplotlib
-opencv-python
+pandas
+scikit-learn
 scipy
+torch
+sentence-transformers
+transformers
+
+# Image and Pose Analysis
+opencv-python
+mediapipe
 scikit-image
-openai
-fastapi
-uvicorn
-python-multipart
-motor
+matplotlib
 Pillow
-uuid
+
+# Web Framework and Server
+fastapi
+uvicorn[standard]
+python-multipart
 httpx
-dotenv
-azure-storage-blob
 aiohttp
+requests
+
+# Database
+motor
+python-dotenv
+
+# Cloud Storage
+azure-storage-blob
+
+# Utilities
+uuid

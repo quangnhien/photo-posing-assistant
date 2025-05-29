@@ -1,4 +1,6 @@
+import json
 import math
+from typing import Optional
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Query
 from fastapi.responses import JSONResponse
 import motor.motor_asyncio
@@ -20,6 +22,8 @@ from compare_keypoints import compare_keypoints
 from helper import download_image_as_np_array
 import numpy as np
 
+from trainer import train_pose_model
+from image_fetcher import fetch_location_pose_images
 
 load_dotenv()
 
@@ -45,6 +49,8 @@ db = client.get_database('posingassistant')
 poses_collection = db.get_collection('posegallery')
 error_collection = db.get_collection('errorimages')
 compare_collection = db.get_collection('compare')
+poses_data_collection = db.get_collection('poses')
+
 # Azure Blob Storage
 AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
 blob_service_client = BlobServiceClient.from_connection_string(
@@ -425,3 +431,71 @@ async def search_by_keywords(keywords, n=10):
         for pose in results
     ]
     return response
+
+@app.on_event("startup")
+async def on_startup():
+    # Check if MongoDB already has pose data
+    count = await poses_data_collection.count_documents({})
+    # dataset_path = os.path.join(os.path.dirname(__file__), "", "poses_dataset.json")
+    if count == 0:
+        # Load from JSON file
+        with open("poses_dataset.json", "r") as f:
+            pose_data = json.load(f)
+            if isinstance(pose_data, list):
+                await poses_data_collection.insert_many(pose_data)
+
+@app.post("/retrain")
+async def retrain_model():
+    await train_pose_model()
+    return {"status": "success", "message": "Model retrained successfully"}
+
+@app.get("/search-photos")
+async def search_photos(
+    location: str = Query(..., description="Location to search (e.g., Eiffel Tower)", min_length=1),
+    pose_description: Optional[str] = Query(None, description="Describe the pose you want"),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(10, ge=1)
+):
+    try:
+
+        # Load poses from MongoDB
+        poses = []
+        if pose_description:
+            # Check if this pose already exists
+            existing_pose = await poses_data_collection.find_one({"pose": pose_description})
+            if not existing_pose:
+                # Add new pose to the database
+                await poses_data_collection.insert_one({
+                    "description": "User provided",
+                    "pose": pose_description,
+                    "label": 1
+                })
+                # Optionally re-train model on startup or now
+                await train_pose_model()
+
+            poses = [pose_description]
+        else:
+            # Get all known poses from MongoDB
+            cursor = poses_data_collection.find({})
+            poses = [doc["pose"] async for doc in cursor]
+
+        # Fetch Unsplash images and match against known poses
+        results = await fetch_location_pose_images(
+            location=location,
+            page=page,
+            per_page=per_page,
+            poses=poses
+        )
+
+        if not results or not results["images"]:
+            raise HTTPException(status_code=404, detail=f"No relevant images found for '{location}' with pose '{pose_description or 'any'}'")
+
+        return JSONResponse(content={
+            "status": "success",
+            "data": results["images"],
+            "page": results["currentPage"],
+            "message": f"Found {len(results['images'])} images at '{location}' with pose: {pose_description or 'any'}"
+        })
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch images: {str(e)}")

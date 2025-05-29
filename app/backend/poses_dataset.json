@@ -1,0 +1,12 @@
+[
+  {
+    "description": "A person standing with one arm raised",
+    "pose": "Pose: One or both arms raised, possibly pointing or waving",
+    "label": 1
+  },
+  {
+    "description": "A person sitting down",
+    "pose": "Pose: Sitting or crouching",
+    "label": 0
+  }
+]

@@ -10,6 +10,7 @@ export default function Header() {
 
     const navLinks = [
         { path: '/', label: 'Home' },
+        { path: '/search-photos', label: 'Search Photos' },
         { path: '/admin', label: 'Upload Image' },
     ];
 
