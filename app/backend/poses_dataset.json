@@ -1,12 +1,2502 @@
 [
   {
-    "description": "A person standing with one arm raised",
-    "pose": "Pose: One or both arms raised, possibly pointing or waving",
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
     "label": 1
   },
   {
-    "description": "A person sitting down",
-    "pose": "Pose: Sitting or crouching",
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 0
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 0
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 0
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 0
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 0
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Person crouching behind a bush",
+    "pose": "Pose: Crouching",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Someone waving with both hands",
+    "pose": "Pose: Waving",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 0
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Adult kneeling with one hand on the ground",
+    "pose": "Pose: Kneeling",
+    "label": 0
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 0
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 1
+  },
+  {
+    "description": "Woman climbing stairs quickly",
+    "pose": "Pose: Climbing",
+    "label": 0
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "Person stretching arms to the side",
+    "pose": "Pose: Stretching",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone balancing on one leg",
+    "pose": "Pose: One-leg balance",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 0
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Man leaning back on a bench with legs crossed",
+    "pose": "Pose: Leaning back",
+    "label": 1
+  },
+  {
+    "description": "Child pointing toward the sky",
+    "pose": "Pose: Pointing",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "Person holding a heavy object overhead",
+    "pose": "Pose: Holding object overhead",
+    "label": 1
+  },
+  {
+    "description": "Individual jumping mid-air with legs spread",
+    "pose": "Pose: Jumping",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 1
+  },
+  {
+    "description": "Individual saluting with right hand",
+    "pose": "Pose: Salute",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 0
+  },
+  {
+    "description": "Person running across a field",
+    "pose": "Pose: Running",
+    "label": 1
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 0
+  },
+  {
+    "description": "Someone sitting on a bench reading a book",
+    "pose": "Pose: Sitting and reading",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 0
+  },
+  {
+    "description": "Woman doing a handstand",
+    "pose": "Pose: Handstand",
+    "label": 1
+  },
+  {
+    "description": "Person crossing arms while leaning on a wall",
+    "pose": "Pose: Leaning with arms crossed",
+    "label": 1
+  },
+  {
+    "description": "A person standing with arms crossed",
+    "pose": "Pose: Standing with arms crossed",
+    "label": 0
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
+    "label": 0
+  },
+  {
+    "description": "Someone dancing with hands above head",
+    "pose": "Pose: Dancing",
+    "label": 1
+  },
+  {
+    "description": "Man doing a yoga warrior pose",
+    "pose": "Pose: Yoga - Warrior",
+    "label": 1
+  },
+  {
+    "description": "A person lying down on grass with eyes closed",
+    "pose": "Pose: Lying down",
+    "label": 1
+  },
+  {
+    "description": "Athlete sprinting on a track",
+    "pose": "Pose: Sprinting",
     "label": 0
   }
 ]

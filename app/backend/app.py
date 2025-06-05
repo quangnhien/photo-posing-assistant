@@ -434,11 +434,8 @@ async def search_by_keywords(keywords, n=10):
 
 @app.on_event("startup")
 async def on_startup():
-    # Check if MongoDB already has pose data
     count = await poses_data_collection.count_documents({})
-    # dataset_path = os.path.join(os.path.dirname(__file__), "", "poses_dataset.json")
     if count == 0:
-        # Load from JSON file
         with open("poses_dataset.json", "r") as f:
             pose_data = json.load(f)
             if isinstance(pose_data, list):
@@ -457,7 +454,6 @@ async def search_photos(
     per_page: int = Query(10, ge=1)
 ):
     try:
-
         # Load poses from MongoDB
         poses = []
         if pose_description:

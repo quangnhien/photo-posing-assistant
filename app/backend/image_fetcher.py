@@ -32,21 +32,23 @@ def fetch_unsplash_images(query: str, page: int, per_page: int = 10):
             "description": photo.get("description") or photo.get("alt_description") or "No description",
             "photographer": photo["user"]["name"],
             "link": photo["links"]["html"]
+            #"pose"
         })
     return images
 
-def fetch_location_pose_images(location: str, page: int, per_page: int):
+def fetch_location_pose_images(location: str, page: int, per_page: int, poses: List[str]):
     query = f"{location}, a person"
     count = 0
     max_attempts = 5
 
     while count < max_attempts:
-        images = fetch_unsplash_images(query, UNSPLASH_API_KEY, page + count, per_page)
+        images = fetch_unsplash_images(query, page + count, per_page)
         results = []
 
         for img in images:
-            predicted_pose = predict_location_and_pose(img["url"], img.get("description", ""))
-            if predicted_pose == "Correct location and pose":
+            predicted_pose = predict_location_and_pose(img["url"], img['description'])
+
+            if predicted_pose:
                 img["pose"] = predicted_pose
                 results.append(img)
 
