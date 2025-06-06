@@ -41,13 +41,32 @@ help you match the pose more accurately
 - Backend: FastAPI
 - Database: MongoDB
 - APIs: Cloudinary (for photo storage)
+## 🛠️ **AI Pretrained Models**
+- Mediapipe, OpenPose: Detect body keypoints
+- CLIP: Embed image into vector for image and text searching.
+- BCLIP: Extract automatically tags from image for keyword searching
+- GPT: Generate the guide in text
 
+Note: I've tried to fine-tune efficientnet model with google landscape mirco dataset to image embedded model which focus on tourist attraction images.
 ## 📦 **Installation**
+ Run in your local machine.
 
-    git clone https://github.com/your-username/photo-posing-assistant.git
+    git clone https://github.com/quangnhien/photo-posing-assistant.git
     cd photo-posing-assistant
-    npm install
-    npm start
+
+    # Build models
+    cd model
+    docker compose up
+
+    # Run backend
+    cd app/backend
+    uvicorn app:app --host 0.0.0.0 --port 8000
+
+    # Run frontend
+    cd app/frontend
+    npm run dev
+
+    
 
 
 
