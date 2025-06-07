@@ -63,8 +63,25 @@ def evaluate(model, loader, device):
             total += y.size(0)
     return correct / total
 
+# ===================== Early Stopping =====================
+class EarlyStopping:
+    def __init__(self, patience=3):
+        self.patience = patience
+        self.counter = 0
+        self.best_score = None
+
+    def step(self, val_score):
+        if self.best_score is None or val_score > self.best_score:
+            self.best_score = val_score
+            self.counter = 0
+            return False  # No early stop
+        else:
+            self.counter += 1
+            return self.counter >= self.patience
+
 # ===================== Training =====================
 def train(model, train_loader, val_loader, optimizer, criterion, epochs, device):
+    early_stopper = EarlyStopping(patience=3)
     for epoch in range(epochs):
         model.train()
         total_loss, total, correct = 0, 0, 0
@@ -91,47 +108,59 @@ def train(model, train_loader, val_loader, optimizer, criterion, epochs, device)
 
         print(f"Epoch {epoch+1}: Train Acc = {train_acc:.4f}, Val Acc = {val_acc:.4f}")
 
-        # MLflow tracking
         mlflow.log_metric("train_loss", train_loss, step=epoch)
         mlflow.log_metric("train_acc", train_acc, step=epoch)
         mlflow.log_metric("val_acc", val_acc, step=epoch)
 
+        if early_stopper.step(val_acc):
+            print("Early stopping triggered.")
+            break
+
 # ===================== Main Script =====================
 def main():
-    # Paths
     train_csv = "train.csv"
     val_csv = "val.csv"
+    # test_csv = "test.csv"
     image_dir = "images"
 
-    # Dataset and loaders
     train_dataset = LandmarkDataset(train_csv, image_dir, transform=train_transform)
     val_dataset = LandmarkDataset(val_csv, image_dir, transform=val_transform)
+    # test_dataset = LandmarkDataset(test_csv, image_dir, transform=val_transform)
+
     train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=4)
     val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=4)
+    # test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=4)
 
     num_classes = len(train_dataset.label2idx)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Model
-    model = models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.DEFAULT)
-    model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
-    model = model.to(device)
+    base_model = models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.DEFAULT)
+    in_features = base_model.classifier[1].in_features
+    base_model.classifier = nn.Sequential(
+        nn.Dropout(p=0.2),
+        nn.Linear(in_features, 512),
+        nn.ReLU(),
+        nn.Linear(512, num_classes)
+    )
+    model = base_model.to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     criterion = nn.CrossEntropyLoss()
 
-    # MLflow tracking
     mlflow.set_experiment("landmark-efficientnet")
 
     with mlflow.start_run():
-        mlflow.log_param("model", "efficientnet_b0")
-        mlflow.log_param("epochs", 5)
+        mlflow.log_param("model", "efficientnet_b0_custom")
+        mlflow.log_param("epochs", 100)
         mlflow.log_param("batch_size", 32)
         mlflow.log_param("learning_rate", 1e-4)
 
-        train(model, train_loader, val_loader, optimizer, criterion, epochs=5, device=device)
+        train(model, train_loader, val_loader, optimizer, criterion, epochs=10, device=device)
 
-        # Save model
+        # test_acc = evaluate(model, test_loader, device)
+        # print(f"Test Accuracy: {test_acc:.4f}")
+        # mlflow.log_metric("test_acc", test_acc)
+
         torch.save(model.state_dict(), "efficientnet_b0_landmark.pth")
         mlflow.log_artifact("efficientnet_b0_landmark.pth")
         mlflow.pytorch.log_model(model, "model")
